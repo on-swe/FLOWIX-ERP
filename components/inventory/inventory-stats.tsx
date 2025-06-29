@@ -1,0 +1,52 @@
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { Package, AlertTriangle, TrendingUp, DollarSign } from "lucide-react"
+
+const stats = [
+  {
+    title: "Total Products",
+    value: "2,847",
+    change: "+12.5%",
+    icon: Package,
+    color: "text-blue-600",
+  },
+  {
+    title: "Low Stock Items",
+    value: "23",
+    change: "-8.2%",
+    icon: AlertTriangle,
+    color: "text-red-600",
+  },
+  {
+    title: "Inventory Value",
+    value: "$847,392",
+    change: "+15.3%",
+    icon: DollarSign,
+    color: "text-green-600",
+  },
+  {
+    title: "Monthly Turnover",
+    value: "4.2x",
+    change: "+2.1%",
+    icon: TrendingUp,
+    color: "text-purple-600",
+  },
+]
+
+export function InventoryStats() {
+  return (
+    <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+      {stats.map((stat) => (
+        <Card key={stat.title}>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">{stat.title}</CardTitle>
+            <stat.icon className={`h-4 w-4 ${stat.color}`} />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">{stat.value}</div>
+            <p className="text-xs text-muted-foreground">{stat.change} from last month</p>
+          </CardContent>
+        </Card>
+      ))}
+    </div>
+  )
+}
