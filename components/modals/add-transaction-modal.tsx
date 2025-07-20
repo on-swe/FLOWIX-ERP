@@ -1,7 +1,5 @@
 "use client"
 
-import type React from "react"
-
 import { useState } from "react"
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
 import { Button } from "@/components/ui/button"
@@ -26,11 +24,10 @@ export function AddTransactionModal({ isOpen, onClose }: AddTransactionModalProp
     e.preventDefault()
     setIsLoading(true)
 
-    // Simulate API call
     await new Promise((resolve) => setTimeout(resolve, 2000))
 
     toast({
-      title: "Transaction Added Successfully!",
+      title: "Transaction Added",
       description: "New transaction has been recorded in the system.",
     })
 
@@ -40,61 +37,71 @@ export function AddTransactionModal({ isOpen, onClose }: AddTransactionModalProp
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
-        <DialogHeader>
-          <DialogTitle className="text-2xl font-bold bg-gradient-to-r from-green-600 to-blue-600 bg-clip-text text-transparent">
-            Add New Transaction
+      <DialogContent className="fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[95vw] max-w-2xl max-h-[90vh] overflow-y-auto border border-gray-200 shadow-lg">
+        <DialogHeader className="border-b border-gray-200 pb-4">
+          <DialogTitle className="text-xl font-medium flex items-center gap-2">
+            <DollarSign className="h-5 w-5" />
+            Add Transaction
           </DialogTitle>
         </DialogHeader>
 
-        <form onSubmit={handleSubmit} className="space-y-6">
+        <form onSubmit={handleSubmit} className="divide-y divide-gray-200">
           {/* Transaction Details */}
-          <div className="space-y-4">
-            <h3 className="text-lg font-semibold text-gray-900 dark:text-white flex items-center gap-2">
-              <DollarSign className="h-5 w-5" />
-              Transaction Details
-            </h3>
+          <div className="py-4 space-y-4">
+            <div className="border-b border-gray-200 pb-2">
+              <h3 className="text-sm font-medium uppercase tracking-wider text-gray-500 flex items-center gap-2">
+                <DollarSign className="h-4 w-4" />
+                Transaction Details
+              </h3>
+            </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div className="space-y-2">
-                <Label htmlFor="transactionType">Transaction Type *</Label>
+              <div className="space-y-1.5">
+                <Label htmlFor="transactionType">Type *</Label>
                 <Select required onValueChange={setTransactionType}>
-                  <SelectTrigger>
+                  <SelectTrigger className="border-gray-300 focus:ring-gray-400">
                     <SelectValue placeholder="Select type" />
                   </SelectTrigger>
-                  <SelectContent>
+                  <SelectContent className="border-gray-200">
                     <SelectItem value="income">
                       <div className="flex items-center gap-2">
-                        <TrendingUp className="h-4 w-4 text-green-500" />
+                        <TrendingUp className="h-4 w-4" />
                         Income
                       </div>
                     </SelectItem>
                     <SelectItem value="expense">
                       <div className="flex items-center gap-2">
-                        <TrendingDown className="h-4 w-4 text-red-500" />
+                        <TrendingDown className="h-4 w-4" />
                         Expense
                       </div>
                     </SelectItem>
                   </SelectContent>
                 </Select>
               </div>
-              <div className="space-y-2">
+              <div className="space-y-1.5">
                 <Label htmlFor="amount">Amount *</Label>
                 <div className="relative">
                   <DollarSign className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
-                  <Input id="amount" type="number" step="0.01" placeholder="0.00" className="pl-10" required />
+                  <Input 
+                    id="amount" 
+                    type="number" 
+                    step="0.01" 
+                    placeholder="0.00" 
+                    className="pl-10 border-gray-300 focus:ring-gray-400" 
+                    required 
+                  />
                 </div>
               </div>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div className="space-y-2">
+              <div className="space-y-1.5">
                 <Label htmlFor="category">Category *</Label>
                 <Select required>
-                  <SelectTrigger>
+                  <SelectTrigger className="border-gray-300 focus:ring-gray-400">
                     <SelectValue placeholder="Select category" />
                   </SelectTrigger>
-                  <SelectContent>
+                  <SelectContent className="border-gray-200">
                     {transactionType === "income" ? (
                       <>
                         <SelectItem value="sales">Sales Revenue</SelectItem>
@@ -108,79 +115,94 @@ export function AddTransactionModal({ isOpen, onClose }: AddTransactionModalProp
                         <SelectItem value="marketing">Marketing</SelectItem>
                         <SelectItem value="utilities">Utilities</SelectItem>
                         <SelectItem value="rent">Rent</SelectItem>
-                        <SelectItem value="salaries">Salaries</SelectItem>
-                        <SelectItem value="other-expense">Other Expense</SelectItem>
                       </>
                     )}
                   </SelectContent>
                 </Select>
               </div>
-              <div className="space-y-2">
-                <Label htmlFor="date">Transaction Date *</Label>
+              <div className="space-y-1.5">
+                <Label htmlFor="date">Date *</Label>
                 <div className="relative">
                   <Calendar className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
-                  <Input id="date" type="date" className="pl-10" required />
+                  <Input 
+                    id="date" 
+                    type="date" 
+                    className="pl-10 border-gray-300 focus:ring-gray-400" 
+                    required 
+                  />
                 </div>
               </div>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div className="space-y-2">
+              <div className="space-y-1.5">
                 <Label htmlFor="paymentMethod">Payment Method *</Label>
                 <Select required>
-                  <SelectTrigger>
+                  <SelectTrigger className="border-gray-300 focus:ring-gray-400">
                     <SelectValue placeholder="Select method" />
                   </SelectTrigger>
-                  <SelectContent>
+                  <SelectContent className="border-gray-200">
                     <SelectItem value="cash">Cash</SelectItem>
                     <SelectItem value="credit-card">Credit Card</SelectItem>
-                    <SelectItem value="debit-card">Debit Card</SelectItem>
                     <SelectItem value="bank-transfer">Bank Transfer</SelectItem>
-                    <SelectItem value="check">Check</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
-              <div className="space-y-2">
-                <Label htmlFor="reference">Reference Number</Label>
+              <div className="space-y-1.5">
+                <Label htmlFor="reference">Reference</Label>
                 <div className="relative">
                   <FileText className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
-                  <Input id="reference" placeholder="REF001" className="pl-10" />
+                  <Input 
+                    id="reference" 
+                    placeholder="REF001" 
+                    className="pl-10 border-gray-300 focus:ring-gray-400" 
+                  />
                 </div>
               </div>
             </div>
 
-            <div className="space-y-2">
+            <div className="space-y-1.5">
               <Label htmlFor="description">Description</Label>
-              <Textarea id="description" placeholder="Transaction description..." />
+              <Textarea 
+                id="description" 
+                placeholder="Transaction description..." 
+                className="border-gray-300 focus:ring-gray-400 min-h-[100px]"
+              />
             </div>
 
-            <div className="space-y-2">
+            <div className="space-y-1.5">
               <Label htmlFor="account">Account *</Label>
               <Select required>
-                <SelectTrigger>
+                <SelectTrigger className="border-gray-300 focus:ring-gray-400">
                   <SelectValue placeholder="Select account" />
                 </SelectTrigger>
-                <SelectContent>
+                <SelectContent className="border-gray-200">
                   <SelectItem value="checking">Checking Account</SelectItem>
                   <SelectItem value="savings">Savings Account</SelectItem>
-                  <SelectItem value="petty-cash">Petty Cash</SelectItem>
                   <SelectItem value="credit-card">Credit Card</SelectItem>
                 </SelectContent>
               </Select>
             </div>
           </div>
 
-          <div className="flex justify-end gap-3 pt-4">
-            <Button type="button" variant="outline" onClick={onClose}>
-              Cancel
-            </Button>
-            <Button
-              type="submit"
-              disabled={isLoading}
-              className="bg-gradient-to-r from-green-600 to-blue-600 hover:from-green-700 hover:to-blue-700"
-            >
-              {isLoading ? "Adding Transaction..." : "Add Transaction"}
-            </Button>
+          <div className="sticky bottom-0 bg-white py-4 border-t border-gray-200">
+            <div className="flex justify-end gap-3">
+              <Button 
+                type="button" 
+                variant="outline" 
+                onClick={onClose}
+                className="border-gray-300 text-gray-700 hover:bg-gray-50"
+              >
+                Cancel
+              </Button>
+              <Button
+                type="submit"
+                disabled={isLoading}
+                className="bg-gray-900 text-white hover:bg-gray-800 focus:ring-gray-500"
+              >
+                {isLoading ? "Processing..." : "Add Transaction"}
+              </Button>
+            </div>
           </div>
         </form>
       </DialogContent>

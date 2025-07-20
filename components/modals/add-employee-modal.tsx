@@ -1,7 +1,6 @@
 "use client"
 
 import type React from "react"
-
 import { useState } from "react"
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
 import { Button } from "@/components/ui/button"
@@ -10,7 +9,7 @@ import { Label } from "@/components/ui/label"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Textarea } from "@/components/ui/textarea"
 import { useToast } from "@/hooks/use-toast"
-import { User, Mail, Phone, MapPin, Calendar, DollarSign, Briefcase } from "lucide-react"
+import { User, Mail, Phone, MapPin, Calendar, DollarSign, Briefcase, X } from "lucide-react"
 
 interface AddEmployeeModalProps {
   isOpen: boolean
@@ -29,7 +28,7 @@ export function AddEmployeeModal({ isOpen, onClose }: AddEmployeeModalProps) {
     await new Promise((resolve) => setTimeout(resolve, 2000))
 
     toast({
-      title: "Employee Added Successfully!",
+      title: "Employee Added",
       description: "New employee has been added to the system.",
     })
 
@@ -39,29 +38,51 @@ export function AddEmployeeModal({ isOpen, onClose }: AddEmployeeModalProps) {
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
-        <DialogHeader>
-          <DialogTitle className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-            Add New Employee
+      <DialogContent className="sm:max-w-2xl max-w-[95vw] max-h-[90dvh] overflow-y-auto bg-background border border-muted-foreground/20">
+        {/* Mobile close button */}
+        <button 
+          onClick={onClose}
+          className="absolute right-4 top-4 rounded-sm opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 sm:hidden"
+        >
+          <X className="h-5 w-5" />
+          <span className="sr-only">Close</span>
+        </button>
+
+        <DialogHeader className="border-b border-muted-foreground/10 pb-4">
+          <DialogTitle className="text-xl font-medium flex items-center gap-3">
+            <div className="p-2 bg-muted rounded-lg">
+              <User className="h-5 w-5" />
+            </div>
+            <span>Add New Employee</span>
           </DialogTitle>
         </DialogHeader>
 
-        <form onSubmit={handleSubmit} className="space-y-6">
+        <form onSubmit={handleSubmit} className="divide-y divide-muted-foreground/10">
           {/* Personal Information */}
           <div className="space-y-4">
-            <h3 className="text-lg font-semibold text-gray-900 dark:text-white flex items-center gap-2">
-              <User className="h-5 w-5" />
+            <h3 className="text-sm font-medium uppercase tracking-wider text-muted-foreground flex items-center gap-2">
+              <User className="h-4 w-4" />
               Personal Information
             </h3>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="space-y-2">
                 <Label htmlFor="firstName">First Name *</Label>
-                <Input id="firstName" placeholder="John" required />
+                <Input 
+                  id="firstName" 
+                  placeholder="John" 
+                  required 
+                  className="border-muted-foreground/30 focus:border-muted-foreground/50"
+                />
               </div>
               <div className="space-y-2">
                 <Label htmlFor="lastName">Last Name *</Label>
-                <Input id="lastName" placeholder="Doe" required />
+                <Input 
+                  id="lastName" 
+                  placeholder="Doe" 
+                  required 
+                  className="border-muted-foreground/30 focus:border-muted-foreground/50"
+                />
               </div>
             </div>
 
@@ -69,15 +90,25 @@ export function AddEmployeeModal({ isOpen, onClose }: AddEmployeeModalProps) {
               <div className="space-y-2">
                 <Label htmlFor="email">Email *</Label>
                 <div className="relative">
-                  <Mail className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
-                  <Input id="email" type="email" placeholder="john.doe@company.com" className="pl-10" required />
+                  <Mail className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                  <Input 
+                    id="email" 
+                    type="email" 
+                    placeholder="john.doe@company.com" 
+                    className="pl-10 border-muted-foreground/30 focus:border-muted-foreground/50" 
+                    required 
+                  />
                 </div>
               </div>
               <div className="space-y-2">
                 <Label htmlFor="phone">Phone Number</Label>
                 <div className="relative">
-                  <Phone className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
-                  <Input id="phone" placeholder="+1 (555) 123-4567" className="pl-10" />
+                  <Phone className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                  <Input 
+                    id="phone" 
+                    placeholder="+1 (555) 123-4567" 
+                    className="pl-10 border-muted-foreground/30 focus:border-muted-foreground/50" 
+                  />
                 </div>
               </div>
             </div>
@@ -85,28 +116,37 @@ export function AddEmployeeModal({ isOpen, onClose }: AddEmployeeModalProps) {
             <div className="space-y-2">
               <Label htmlFor="address">Address</Label>
               <div className="relative">
-                <MapPin className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
-                <Textarea id="address" placeholder="123 Main St, City, State, ZIP" className="pl-10" />
+                <MapPin className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                <Textarea 
+                  id="address" 
+                  placeholder="123 Main St, City, State, ZIP" 
+                  className="pl-10 border-muted-foreground/30 focus:border-muted-foreground/50 min-h-[80px]" 
+                />
               </div>
             </div>
           </div>
 
           {/* Employment Details */}
           <div className="space-y-4">
-            <h3 className="text-lg font-semibold text-gray-900 dark:text-white flex items-center gap-2">
-              <Briefcase className="h-5 w-5" />
+            <h3 className="text-sm font-medium uppercase tracking-wider text-muted-foreground flex items-center gap-2">
+              <Briefcase className="h-4 w-4" />
               Employment Details
             </h3>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="space-y-2">
                 <Label htmlFor="employeeId">Employee ID *</Label>
-                <Input id="employeeId" placeholder="EMP001" required />
+                <Input 
+                  id="employeeId" 
+                  placeholder="EMP001" 
+                  required 
+                  className="border-muted-foreground/30 focus:border-muted-foreground/50"
+                />
               </div>
               <div className="space-y-2">
                 <Label htmlFor="department">Department *</Label>
                 <Select required>
-                  <SelectTrigger>
+                  <SelectTrigger className="border-muted-foreground/30 focus:border-muted-foreground/50">
                     <SelectValue placeholder="Select department" />
                   </SelectTrigger>
                   <SelectContent>
@@ -123,12 +163,17 @@ export function AddEmployeeModal({ isOpen, onClose }: AddEmployeeModalProps) {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="space-y-2">
                 <Label htmlFor="position">Position *</Label>
-                <Input id="position" placeholder="Software Engineer" required />
+                <Input 
+                  id="position" 
+                  placeholder="Software Engineer" 
+                  required 
+                  className="border-muted-foreground/30 focus:border-muted-foreground/50"
+                />
               </div>
               <div className="space-y-2">
                 <Label htmlFor="manager">Manager</Label>
                 <Select>
-                  <SelectTrigger>
+                  <SelectTrigger className="border-muted-foreground/30 focus:border-muted-foreground/50">
                     <SelectValue placeholder="Select manager" />
                   </SelectTrigger>
                   <SelectContent>
@@ -144,15 +189,25 @@ export function AddEmployeeModal({ isOpen, onClose }: AddEmployeeModalProps) {
               <div className="space-y-2">
                 <Label htmlFor="startDate">Start Date *</Label>
                 <div className="relative">
-                  <Calendar className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
-                  <Input id="startDate" type="date" className="pl-10" required />
+                  <Calendar className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                  <Input 
+                    id="startDate" 
+                    type="date" 
+                    className="pl-10 border-muted-foreground/30 focus:border-muted-foreground/50" 
+                    required 
+                  />
                 </div>
               </div>
               <div className="space-y-2">
                 <Label htmlFor="salary">Salary</Label>
                 <div className="relative">
-                  <DollarSign className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
-                  <Input id="salary" type="number" placeholder="75000" className="pl-10" />
+                  <DollarSign className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                  <Input 
+                    id="salary" 
+                    type="number" 
+                    placeholder="75000" 
+                    className="pl-10 border-muted-foreground/30 focus:border-muted-foreground/50" 
+                  />
                 </div>
               </div>
             </div>
@@ -160,7 +215,7 @@ export function AddEmployeeModal({ isOpen, onClose }: AddEmployeeModalProps) {
             <div className="space-y-2">
               <Label htmlFor="employmentType">Employment Type *</Label>
               <Select required>
-                <SelectTrigger>
+                <SelectTrigger className="border-muted-foreground/30 focus:border-muted-foreground/50">
                   <SelectValue placeholder="Select employment type" />
                 </SelectTrigger>
                 <SelectContent>
@@ -173,17 +228,31 @@ export function AddEmployeeModal({ isOpen, onClose }: AddEmployeeModalProps) {
             </div>
           </div>
 
-          <div className="flex justify-end gap-3 pt-4">
-            <Button type="button" variant="outline" onClick={onClose}>
-              Cancel
-            </Button>
-            <Button
-              type="submit"
-              disabled={isLoading}
-              className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700"
-            >
-              {isLoading ? "Adding Employee..." : "Add Employee"}
-            </Button>
+          <div className="sticky bottom-0 bg-background py-4 border-t border-muted-foreground/10 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.05)]">
+            <div className="flex gap-3">
+              <Button 
+                type="button" 
+                variant="outline" 
+                onClick={onClose}
+                className="border-muted-foreground/30 hover:bg-muted flex-1"
+              >
+                Cancel
+              </Button>
+              <Button
+                type="submit"
+                disabled={isLoading}
+                className="bg-foreground text-background hover:bg-foreground/90 flex-1"
+              >
+                {isLoading ? (
+                  <>
+                    <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
+                    Adding...
+                  </>
+                ) : (
+                  "Add Employee"
+                )}
+              </Button>
+            </div>
           </div>
         </form>
       </DialogContent>

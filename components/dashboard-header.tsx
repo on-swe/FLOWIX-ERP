@@ -21,8 +21,8 @@ export function DashboardHeader() {
 
   return (
     <div className="sticky top-0 z-40 flex h-16 shrink-0 items-center gap-x-4 border-b border-gray-200 dark:border-gray-800 bg-white/80 dark:bg-gray-900/80 backdrop-blur-xl px-4 shadow-sm sm:gap-x-6 sm:px-6 lg:px-8">
-      <div className="flex flex-1 gap-x-4 self-stretch lg:gap-x-6">
-        <form className="relative flex flex-1 max-w-md" action="#" method="GET">
+      <div className="flex justify-between flex-1 gap-x-4 self-stretch lg:gap-x-6">
+        <form className="relative flex flex-1 max-w-md items-center" action="#" method="GET">
           <label htmlFor="search-field" className="sr-only">
             Search
           </label>

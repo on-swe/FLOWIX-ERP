@@ -1,16 +1,15 @@
 "use client"
 
 import type React from "react"
-
 import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Modal, ModalContent, ModalDescription, ModalFooter, ModalHeader, ModalTitle } from "@/components/ui/modal"
+import { Modal, ModalContent, ModalHeader, ModalTitle } from "@/components/ui/modal"
 import { useToast } from "@/hooks/use-toast"
-import { ShoppingCart, User, Package, Calendar, Sparkles } from "lucide-react"
+import { ShoppingCart, X } from "lucide-react"
 
 interface AddSaleModalProps {
   open: boolean
@@ -60,9 +59,8 @@ export function AddSaleModal({ open, onOpenChange }: AddSaleModalProps) {
 
     const totals = calculateTotal()
     toast({
-      title: "Sale Created Successfully! 💰",
-      description: `Sale order for $${totals.total} has been created and saved.`,
-      className: "border-green-200 bg-green-50 text-green-900 dark:bg-green-950 dark:text-green-100",
+      title: "Sale Created",
+      description: `Sale order for $${totals.total} has been created.`,
     })
 
     setFormData({
@@ -88,58 +86,63 @@ export function AddSaleModal({ open, onOpenChange }: AddSaleModalProps) {
 
   return (
     <Modal open={open} onOpenChange={onOpenChange}>
-      <ModalContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
-        <ModalHeader className="pb-6">
+      <ModalContent className="h-full left-1/2 top-1/2 w-[95vw] max-w-md max-h-[90dvh] overflow-y-auto sm:max-h-none sm:max-w-2xl">
+        {/* Mobile close button */}
+        <button 
+          onClick={() => onOpenChange(false)}
+          className="absolute right-4 top-4 rounded-sm opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-gray-400 focus:ring-offset-2 sm:hidden"
+        >
+          <X className="h-5 w-5" />
+          <span className="sr-only">Close</span>
+        </button>
+
+        <ModalHeader className="border-b border-gray-200 pb-4">
           <div className="flex items-center space-x-3">
-            <div className="p-2 bg-purple-100 dark:bg-purple-900 rounded-lg">
-              <ShoppingCart className="h-6 w-6 text-purple-600 dark:text-purple-400" />
-            </div>
-            <div>
-              <ModalTitle className="text-xl font-bold">Create New Sale</ModalTitle>
-              <ModalDescription className="text-base">Create a new sales order for your customer</ModalDescription>
-            </div>
+            <ShoppingCart className="h-5 w-5" />
+            <ModalTitle className="text-xl font-medium">New Sales Order</ModalTitle>
           </div>
         </ModalHeader>
 
-        <form onSubmit={handleSubmit} className="space-y-6">
+        <form onSubmit={handleSubmit} className="divide-y divide-gray-200">
           {/* Customer & Product Selection */}
-          <div className="space-y-4">
-            <div className="flex items-center space-x-2 mb-3">
-              <User className="h-4 w-4 text-blue-600" />
-              <h3 className="font-medium text-sm">Order Details</h3>
+          <div className="py-4 space-y-4">
+            <div className="border-b border-gray-200 pb-2">
+              <h3 className="text-sm font-medium uppercase tracking-wider text-gray-500">
+                Order Details
+              </h3>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div className="space-y-2">
-                <Label htmlFor="customer" className="text-sm font-medium">
-                  Customer *
-                </Label>
-                <Select value={formData.customer} onValueChange={(value) => handleInputChange("customer", value)}>
-                  <SelectTrigger className="h-11">
+              <div className="space-y-1.5">
+                <Label htmlFor="customer">Customer *</Label>
+                <Select 
+                  value={formData.customer} 
+                  onValueChange={(value) => handleInputChange("customer", value)}
+                >
+                  <SelectTrigger className="border-gray-300 focus:ring-gray-400">
                     <SelectValue placeholder="Select customer" />
                   </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="john-smith">John Smith - Tech Solutions Inc.</SelectItem>
-                    <SelectItem value="sarah-johnson">Sarah Johnson - Design Studio</SelectItem>
-                    <SelectItem value="michael-brown">Michael Brown - Global Corp</SelectItem>
-                    <SelectItem value="emily-davis">Emily Davis - Innovation Labs</SelectItem>
+                  <SelectContent className="border-gray-200">
+                    <SelectItem value="john-smith">John Smith</SelectItem>
+                    <SelectItem value="sarah-johnson">Sarah Johnson</SelectItem>
+                    <SelectItem value="michael-brown">Michael Brown</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
 
-              <div className="space-y-2">
-                <Label htmlFor="product" className="text-sm font-medium">
-                  Product *
-                </Label>
-                <Select value={formData.product} onValueChange={(value) => handleInputChange("product", value)}>
-                  <SelectTrigger className="h-11">
+              <div className="space-y-1.5">
+                <Label htmlFor="product">Product *</Label>
+                <Select 
+                  value={formData.product} 
+                  onValueChange={(value) => handleInputChange("product", value)}
+                >
+                  <SelectTrigger className="border-gray-300 focus:ring-gray-400">
                     <SelectValue placeholder="Select product" />
                   </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="wireless-headphones">Wireless Headphones - $299.99</SelectItem>
-                    <SelectItem value="office-chair">Office Chair - $599.99</SelectItem>
-                    <SelectItem value="laptop-stand">Laptop Stand - $89.99</SelectItem>
-                    <SelectItem value="bluetooth-speaker">Bluetooth Speaker - $149.99</SelectItem>
+                  <SelectContent className="border-gray-200">
+                    <SelectItem value="wireless-headphones">Wireless Headphones</SelectItem>
+                    <SelectItem value="office-chair">Office Chair</SelectItem>
+                    <SelectItem value="laptop-stand">Laptop Stand</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
@@ -147,17 +150,16 @@ export function AddSaleModal({ open, onOpenChange }: AddSaleModalProps) {
           </div>
 
           {/* Pricing Information */}
-          <div className="space-y-4">
-            <div className="flex items-center space-x-2 mb-3">
-              <Package className="h-4 w-4 text-blue-600" />
-              <h3 className="font-medium text-sm">Pricing Information</h3>
+          <div className="py-4 space-y-4">
+            <div className="border-b border-gray-200 pb-2">
+              <h3 className="text-sm font-medium uppercase tracking-wider text-gray-500">
+                Pricing Information
+              </h3>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              <div className="space-y-2">
-                <Label htmlFor="quantity" className="text-sm font-medium">
-                  Quantity *
-                </Label>
+              <div className="space-y-1.5">
+                <Label htmlFor="quantity">Quantity *</Label>
                 <Input
                   id="quantity"
                   type="number"
@@ -166,14 +168,12 @@ export function AddSaleModal({ open, onOpenChange }: AddSaleModalProps) {
                   onChange={(e) => handleInputChange("quantity", e.target.value)}
                   placeholder="1"
                   required
-                  className="h-11"
+                  className="border-gray-300 focus:ring-gray-400"
                 />
               </div>
 
-              <div className="space-y-2">
-                <Label htmlFor="unitPrice" className="text-sm font-medium">
-                  Unit Price *
-                </Label>
+              <div className="space-y-1.5">
+                <Label htmlFor="unitPrice">Unit Price *</Label>
                 <Input
                   id="unitPrice"
                   type="number"
@@ -182,14 +182,12 @@ export function AddSaleModal({ open, onOpenChange }: AddSaleModalProps) {
                   onChange={(e) => handleInputChange("unitPrice", e.target.value)}
                   placeholder="0.00"
                   required
-                  className="h-11"
+                  className="border-gray-300 focus:ring-gray-400"
                 />
               </div>
 
-              <div className="space-y-2">
-                <Label htmlFor="discount" className="text-sm font-medium">
-                  Discount (%)
-                </Label>
+              <div className="space-y-1.5">
+                <Label htmlFor="discount">Discount (%)</Label>
                 <Input
                   id="discount"
                   type="number"
@@ -199,46 +197,42 @@ export function AddSaleModal({ open, onOpenChange }: AddSaleModalProps) {
                   value={formData.discount}
                   onChange={(e) => handleInputChange("discount", e.target.value)}
                   placeholder="0"
-                  className="h-11"
+                  className="border-gray-300 focus:ring-gray-400"
                 />
               </div>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div className="space-y-2">
-                <Label htmlFor="taxRate" className="text-sm font-medium">
-                  Tax Rate (%)
-                </Label>
-                <Select value={formData.taxRate} onValueChange={(value) => handleInputChange("taxRate", value)}>
-                  <SelectTrigger className="h-11">
+              <div className="space-y-1.5">
+                <Label htmlFor="taxRate">Tax Rate (%)</Label>
+                <Select 
+                  value={formData.taxRate} 
+                  onValueChange={(value) => handleInputChange("taxRate", value)}
+                >
+                  <SelectTrigger className="border-gray-300 focus:ring-gray-400">
                     <SelectValue />
                   </SelectTrigger>
-                  <SelectContent>
+                  <SelectContent className="border-gray-200">
                     <SelectItem value="0">0% - Tax Exempt</SelectItem>
-                    <SelectItem value="5">5% - Reduced Rate</SelectItem>
-                    <SelectItem value="10">10% - Standard Rate</SelectItem>
-                    <SelectItem value="15">15% - Premium Rate</SelectItem>
+                    <SelectItem value="10">10% - Standard</SelectItem>
+                    <SelectItem value="15">15% - Premium</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
 
-              <div className="space-y-2">
-                <Label htmlFor="paymentMethod" className="text-sm font-medium">
-                  Payment Method
-                </Label>
+              <div className="space-y-1.5">
+                <Label htmlFor="paymentMethod">Payment Method</Label>
                 <Select
                   value={formData.paymentMethod}
                   onValueChange={(value) => handleInputChange("paymentMethod", value)}
                 >
-                  <SelectTrigger className="h-11">
+                  <SelectTrigger className="border-gray-300 focus:ring-gray-400">
                     <SelectValue />
                   </SelectTrigger>
-                  <SelectContent>
+                  <SelectContent className="border-gray-200">
                     <SelectItem value="credit_card">Credit Card</SelectItem>
-                    <SelectItem value="debit_card">Debit Card</SelectItem>
                     <SelectItem value="bank_transfer">Bank Transfer</SelectItem>
                     <SelectItem value="cash">Cash</SelectItem>
-                    <SelectItem value="check">Check</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
@@ -246,13 +240,14 @@ export function AddSaleModal({ open, onOpenChange }: AddSaleModalProps) {
           </div>
 
           {/* Order Summary */}
-          <div className="space-y-4">
-            <div className="flex items-center space-x-2 mb-3">
-              <Calendar className="h-4 w-4 text-blue-600" />
-              <h3 className="font-medium text-sm">Order Summary</h3>
+          <div className="py-4 space-y-4">
+            <div className="border-b border-gray-200 pb-2">
+              <h3 className="text-sm font-medium uppercase tracking-wider text-gray-500">
+                Order Summary
+              </h3>
             </div>
 
-            <div className="bg-gray-50 dark:bg-gray-800 rounded-lg p-4 space-y-2">
+            <div className="bg-gray-50 rounded-lg p-4 space-y-2">
               <div className="flex justify-between text-sm">
                 <span>Subtotal:</span>
                 <span>${totals.subtotal}</span>
@@ -265,58 +260,55 @@ export function AddSaleModal({ open, onOpenChange }: AddSaleModalProps) {
                 <span>Tax:</span>
                 <span>${totals.tax}</span>
               </div>
-              <div className="border-t pt-2 flex justify-between font-semibold">
+              <div className="border-t border-gray-200 pt-2 flex justify-between font-semibold">
                 <span>Total:</span>
                 <span>${totals.total}</span>
               </div>
             </div>
 
-            <div className="space-y-2">
-              <Label htmlFor="dueDate" className="text-sm font-medium">
-                Due Date
-              </Label>
+            <div className="space-y-1.5">
+              <Label htmlFor="dueDate">Due Date</Label>
               <Input
                 id="dueDate"
                 type="date"
                 value={formData.dueDate}
                 onChange={(e) => handleInputChange("dueDate", e.target.value)}
-                className="h-11"
+                className="border-gray-300 focus:ring-gray-400"
               />
             </div>
 
-            <div className="space-y-2">
-              <Label htmlFor="notes" className="text-sm font-medium">
-                Notes
-              </Label>
+            <div className="space-y-1.5">
+              <Label htmlFor="notes">Notes</Label>
               <Textarea
                 id="notes"
                 value={formData.notes}
                 onChange={(e) => handleInputChange("notes", e.target.value)}
-                placeholder="Additional notes for this sale..."
-                rows={3}
-                className="resize-none"
+                placeholder="Additional notes..."
+                className="border-gray-300 focus:ring-gray-400 min-h-[100px]"
               />
             </div>
           </div>
 
-          <ModalFooter className="pt-6 border-t">
-            <Button type="button" variant="outline" onClick={() => onOpenChange(false)} disabled={isLoading}>
-              Cancel
-            </Button>
-            <Button type="submit" disabled={isLoading} className="bg-purple-600 hover:bg-purple-700">
-              {isLoading ? (
-                <>
-                  <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
-                  Creating...
-                </>
-              ) : (
-                <>
-                  <Sparkles className="h-4 w-4 mr-2" />
-                  Create Sale
-                </>
-              )}
-            </Button>
-          </ModalFooter>
+          <div className="sticky bottom-0 bg-white py-4 border-t border-gray-200">
+            <div className="flex justify-end gap-3">
+              <Button 
+                type="button" 
+                variant="outline" 
+                onClick={() => onOpenChange(false)} 
+                disabled={isLoading}
+                className="border-gray-300 text-gray-700 hover:bg-gray-50"
+              >
+                Cancel
+              </Button>
+              <Button 
+                type="submit" 
+                disabled={isLoading}
+                className="bg-gray-900 text-white hover:bg-gray-800 focus:ring-gray-500"
+              >
+                {isLoading ? "Processing..." : "Create Order"}
+              </Button>
+            </div>
+          </div>
         </form>
       </ModalContent>
     </Modal>

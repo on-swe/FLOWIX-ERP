@@ -9,9 +9,12 @@ import { Toaster } from "@/components/ui/toaster"
 const inter = Inter({ subsets: ["latin"] })
 
 export const metadata: Metadata = {
-  title: "Enterprise ERP System",
+  title: "Flowix | ERP System",
   description: "Complete enterprise resource planning solution",
-    generator: 'v0.dev'
+    generator: 'Raqeem - رَقيم',
+    icons:{
+      icon: '/logo/logo.png',
+    }
 }
 
 export default function RootLayout({

@@ -1,20 +1,32 @@
-"use client"
+"use client";
 
-import type React from "react"
-
-import { useState } from "react"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Textarea } from "@/components/ui/textarea"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Modal, ModalContent, ModalDescription, ModalFooter, ModalHeader, ModalTitle } from "@/components/ui/modal"
-import { useToast } from "@/hooks/use-toast"
-import { Package, Upload, Sparkles } from "lucide-react"
+import type React from "react";
+import { useState } from "react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import {
+  Modal,
+  ModalContent,
+  ModalDescription,
+  ModalFooter,
+  ModalHeader,
+  ModalTitle,
+} from "@/components/ui/modal";
+import { useToast } from "@/hooks/use-toast";
+import { Package, Upload, Sparkles, X } from "lucide-react";
 
 interface AddProductModalProps {
-  open: boolean
-  onOpenChange: (open: boolean) => void
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
 }
 
 export function AddProductModal({ open, onOpenChange }: AddProductModalProps) {
@@ -28,22 +40,21 @@ export function AddProductModal({ open, onOpenChange }: AddProductModalProps) {
     stock: "",
     minStock: "",
     unit: "pcs",
-  })
-  const [isLoading, setIsLoading] = useState(false)
-  const { toast } = useToast()
+  });
+  const [isLoading, setIsLoading] = useState(false);
+  const { toast } = useToast();
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    setIsLoading(true)
+    e.preventDefault();
+    setIsLoading(true);
 
     // Simulate API call
-    await new Promise((resolve) => setTimeout(resolve, 1500))
+    await new Promise((resolve) => setTimeout(resolve, 1500));
 
     toast({
-      title: "Product Added Successfully! ✨",
+      title: "Product Added",
       description: `${formData.name} has been added to your inventory.`,
-      className: "border-green-200 bg-green-50 text-green-900 dark:bg-green-950 dark:text-green-100",
-    })
+    });
 
     setFormData({
       name: "",
@@ -55,68 +66,83 @@ export function AddProductModal({ open, onOpenChange }: AddProductModalProps) {
       stock: "",
       minStock: "",
       unit: "pcs",
-    })
-    setIsLoading(false)
-    onOpenChange(false)
-  }
+    });
+    setIsLoading(false);
+    onOpenChange(false);
+  };
 
   const handleInputChange = (field: string, value: string) => {
-    setFormData((prev) => ({ ...prev, [field]: value }))
-  }
+    setFormData((prev) => ({ ...prev, [field]: value }));
+  };
 
   return (
     <Modal open={open} onOpenChange={onOpenChange}>
-      <ModalContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
-        <ModalHeader className="pb-6">
+      <ModalContent className="sm:max-w-2xl max-w-[95vw] max-h-[90dvh] overflow-y-auto bg-background border border-muted-foreground/20">
+        {/* Mobile close button */}
+        <button
+          onClick={() => onOpenChange(false)}
+          className="absolute right-4 top-4 rounded-sm opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 sm:hidden"
+        >
+          <X className="h-5 w-5" />
+          <span className="sr-only">Close</span>
+        </button>
+
+        <ModalHeader className="border-b border-muted-foreground/10 pb-4">
           <div className="flex items-center space-x-3">
-            <div className="p-2 bg-blue-100 dark:bg-blue-900 rounded-lg">
-              <Package className="h-6 w-6 text-blue-600 dark:text-blue-400" />
+            <div className="p-2 bg-muted rounded-lg">
+              <Package className="h-5 w-5" />
             </div>
             <div>
-              <ModalTitle className="text-xl font-bold">Add New Product</ModalTitle>
-              <ModalDescription className="text-base">Create a new product in your inventory system</ModalDescription>
+              <ModalTitle className="text-xl font-medium">
+                Add New Product
+              </ModalTitle>
+              <ModalDescription>
+                Create a new product in your inventory system
+              </ModalDescription>
             </div>
           </div>
         </ModalHeader>
 
-        <form onSubmit={handleSubmit} className="space-y-6">
+        <form
+          onSubmit={handleSubmit}
+          className="divide-y divide-muted-foreground/10"
+        >
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {/* Basic Information */}
             <div className="space-y-4">
               <div className="space-y-2">
-                <Label htmlFor="name" className="text-sm font-medium">
-                  Product Name *
-                </Label>
+                <Label htmlFor="name">Product Name *</Label>
                 <Input
                   id="name"
                   value={formData.name}
                   onChange={(e) => handleInputChange("name", e.target.value)}
                   placeholder="Enter product name"
                   required
-                  className="h-11"
+                  className="border-muted-foreground/30 focus:border-muted-foreground/50"
                 />
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="sku" className="text-sm font-medium">
-                  SKU *
-                </Label>
+                <Label htmlFor="sku">SKU *</Label>
                 <Input
                   id="sku"
                   value={formData.sku}
                   onChange={(e) => handleInputChange("sku", e.target.value)}
                   placeholder="e.g., PRD-001"
                   required
-                  className="h-11"
+                  className="border-muted-foreground/30 focus:border-muted-foreground/50"
                 />
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="category" className="text-sm font-medium">
-                  Category *
-                </Label>
-                <Select value={formData.category} onValueChange={(value) => handleInputChange("category", value)}>
-                  <SelectTrigger className="h-11">
+                <Label htmlFor="category">Category *</Label>
+                <Select
+                  value={formData.category}
+                  onValueChange={(value) =>
+                    handleInputChange("category", value)
+                  }
+                >
+                  <SelectTrigger className="border-muted-foreground/30 focus:border-muted-foreground/50">
                     <SelectValue placeholder="Select category" />
                   </SelectTrigger>
                   <SelectContent>
@@ -134,9 +160,7 @@ export function AddProductModal({ open, onOpenChange }: AddProductModalProps) {
             <div className="space-y-4">
               <div className="grid grid-cols-2 gap-3">
                 <div className="space-y-2">
-                  <Label htmlFor="price" className="text-sm font-medium">
-                    Sale Price *
-                  </Label>
+                  <Label htmlFor="price">Sale Price *</Label>
                   <Input
                     id="price"
                     type="number"
@@ -145,13 +169,11 @@ export function AddProductModal({ open, onOpenChange }: AddProductModalProps) {
                     onChange={(e) => handleInputChange("price", e.target.value)}
                     placeholder="0.00"
                     required
-                    className="h-11"
+                    className="border-muted-foreground/30 focus:border-muted-foreground/50"
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="cost" className="text-sm font-medium">
-                    Cost Price
-                  </Label>
+                  <Label htmlFor="cost">Cost Price</Label>
                   <Input
                     id="cost"
                     type="number"
@@ -159,46 +181,45 @@ export function AddProductModal({ open, onOpenChange }: AddProductModalProps) {
                     value={formData.cost}
                     onChange={(e) => handleInputChange("cost", e.target.value)}
                     placeholder="0.00"
-                    className="h-11"
+                    className="border-muted-foreground/30 focus:border-muted-foreground/50"
                   />
                 </div>
               </div>
 
               <div className="grid grid-cols-2 gap-3">
                 <div className="space-y-2">
-                  <Label htmlFor="stock" className="text-sm font-medium">
-                    Initial Stock
-                  </Label>
+                  <Label htmlFor="stock">Initial Stock</Label>
                   <Input
                     id="stock"
                     type="number"
                     value={formData.stock}
                     onChange={(e) => handleInputChange("stock", e.target.value)}
                     placeholder="0"
-                    className="h-11"
+                    className="border-muted-foreground/30 focus:border-muted-foreground/50"
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="minStock" className="text-sm font-medium">
-                    Min Stock Level
-                  </Label>
+                  <Label htmlFor="minStock">Min Stock Level</Label>
                   <Input
                     id="minStock"
                     type="number"
                     value={formData.minStock}
-                    onChange={(e) => handleInputChange("minStock", e.target.value)}
+                    onChange={(e) =>
+                      handleInputChange("minStock", e.target.value)
+                    }
                     placeholder="0"
-                    className="h-11"
+                    className="border-muted-foreground/30 focus:border-muted-foreground/50"
                   />
                 </div>
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="unit" className="text-sm font-medium">
-                  Unit of Measure
-                </Label>
-                <Select value={formData.unit} onValueChange={(value) => handleInputChange("unit", value)}>
-                  <SelectTrigger className="h-11">
+                <Label htmlFor="unit">Unit of Measure</Label>
+                <Select
+                  value={formData.unit}
+                  onValueChange={(value) => handleInputChange("unit", value)}
+                >
+                  <SelectTrigger className="border-muted-foreground/30 focus:border-muted-foreground/50">
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
@@ -215,53 +236,67 @@ export function AddProductModal({ open, onOpenChange }: AddProductModalProps) {
           </div>
 
           {/* Description */}
-          <div className="space-y-2">
-            <Label htmlFor="description" className="text-sm font-medium">
-              Description
-            </Label>
+          <div className=" space-y-2 my-4">
+            <Label htmlFor="description">Description</Label>
             <Textarea
               id="description"
               value={formData.description}
               onChange={(e) => handleInputChange("description", e.target.value)}
               placeholder="Enter product description..."
               rows={3}
-              className="resize-none"
+              className="resize-none border-muted-foreground/30 focus:border-muted-foreground/50"
             />
           </div>
 
           {/* Image Upload Area */}
-          <div className="space-y-2">
-            <Label className="text-sm font-medium">Product Images</Label>
-            <div className="border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-lg p-6 text-center hover:border-blue-400 transition-colors">
-              <Upload className="h-8 w-8 text-gray-400 mx-auto mb-2" />
-              <p className="text-sm text-gray-600 dark:text-gray-400">
+          <div className="pace-y-2">
+            <Label>Product Images</Label>
+            <div className="border-2 border-dashed border-muted-foreground/30 rounded-lg p-6 text-center hover:border-muted-foreground/50 transition-colors">
+              <Upload className="h-8 w-8 text-muted-foreground mx-auto mb-2" />
+              <p className="text-sm text-muted-foreground">
                 Drag & drop images here, or{" "}
-                <span className="text-blue-600 hover:text-blue-700 cursor-pointer">browse</span>
+                <span className="text-foreground hover:text-muted-foreground cursor-pointer">
+                  browse
+                </span>
               </p>
-              <p className="text-xs text-gray-500 mt-1">PNG, JPG up to 10MB</p>
+              <p className="text-xs text-muted-foreground mt-1">
+                PNG, JPG up to 10MB
+              </p>
             </div>
           </div>
 
-          <ModalFooter className="pt-6 border-t">
-            <Button type="button" variant="outline" onClick={() => onOpenChange(false)} disabled={isLoading}>
-              Cancel
-            </Button>
-            <Button type="submit" disabled={isLoading} className="bg-blue-600 hover:bg-blue-700">
-              {isLoading ? (
-                <>
-                  <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
-                  Creating...
-                </>
-              ) : (
-                <>
-                  <Sparkles className="h-4 w-4 mr-2" />
-                  Create Product
-                </>
-              )}
-            </Button>
+          <ModalFooter className="sticky bottom-0 bg-background py-4 border-t border-muted-foreground/10 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.05)]">
+            <div className="grid grid-cols-2 gap-3 w-full">
+              <Button
+                type="button"
+                variant="outline"
+                onClick={() => onOpenChange(false)}
+                disabled={isLoading}
+                className="border-muted-foreground/30 hover:bg-muted"
+              >
+                Cancel
+              </Button>
+              <Button
+                type="submit"
+                disabled={isLoading}
+                className="bg-foreground text-background hover:bg-foreground/90"
+              >
+                {isLoading ? (
+                  <>
+                    <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
+                    Creating...
+                  </>
+                ) : (
+                  <>
+                    <Sparkles className="h-4 w-4 mr-2" />
+                    Create Product
+                  </>
+                )}
+              </Button>
+            </div>
           </ModalFooter>
         </form>
       </ModalContent>
     </Modal>
-  )
+  );
 }

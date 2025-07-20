@@ -19,7 +19,10 @@ import {
   Truck,
   Building,
   Sparkles,
+  Menu,
+  X,
 } from "lucide-react"
+import { useState, useEffect } from "react"
 
 const navigation = [
   { name: "Dashboard", href: "/dashboard", icon: LayoutDashboard, gradient: "from-blue-500 to-indigo-600" },
@@ -40,68 +43,118 @@ const navigation = [
 
 export function DashboardSidebar() {
   const pathname = usePathname()
+  const [isOpen, setIsOpen] = useState(false)
+  const [isMobile, setIsMobile] = useState(false)
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 1024)
+      if (window.innerWidth >= 1024) {
+        setIsOpen(false)
+      }
+    }
+
+    handleResize()
+    window.addEventListener('resize', handleResize)
+    return () => window.removeEventListener('resize', handleResize)
+  }, [])
+
+  const toggleSidebar = () => setIsOpen(!isOpen)
 
   return (
-    <div className="hidden lg:fixed lg:inset-y-0 lg:z-50 lg:flex lg:w-64 lg:flex-col">
-      <div className="flex grow flex-col gap-y-5 overflow-y-auto bg-white dark:bg-gray-900 px-6 pb-4 shadow-elegant border-r border-gray-200 dark:border-gray-800">
-        <div className="flex h-16 shrink-0 items-center">
-          <div className="flex items-center space-x-3">
-            <div className="p-2 bg-gradient-to-br from-blue-600 to-indigo-700 rounded-xl shadow-lg">
-              <Sparkles className="h-6 w-6 text-white" />
-            </div>
-            <div>
-              <h1 className="text-xl font-bold bg-gradient-to-r from-gray-900 to-gray-600 dark:from-white dark:to-gray-300 bg-clip-text text-transparent">
-                Enterprise ERP
-              </h1>
-              <p className="text-xs text-muted-foreground">Professional Edition</p>
+    <>
+      {/* Mobile menu button */}
+      <div className="lg:hidden fixed top-[10px] left-[2px] z-40">
+        <button
+          onClick={toggleSidebar}
+          className="p-2 rounded-md  dark:bg-gray-800 shadow-md border bg-white dark:border-gray-700"
+          aria-label="Toggle sidebar"
+        >
+          {isOpen ? (
+            <X className="h-6 w-6 text-gray-600 dark:text-gray-300" />
+          ) : (
+            <Menu className="h-6 w-6 text-gray-600 dark:text-gray-300" />
+          )}
+        </button>
+      </div>
+
+      {/* Overlay for mobile */}
+      {isOpen && isMobile && (
+        <div
+          className="fixed inset-0 bg-black bg-opacity-50 z-30 lg:hidden"
+          onClick={toggleSidebar}
+        />
+      )}
+
+      {/* Sidebar */}
+      <div
+        className={cn(
+          "fixed lg:fixed inset-y-0 left-0 z-30 w-64 flex-col transition-all duration-300 ease-in-out",
+          "bg-white dark:bg-gray-900 shadow-elegant border-r border-gray-200 dark:border-gray-800",
+          isMobile ? (isOpen ? "translate-x-0" : "-translate-x-full") : "translate-x-0"
+        )}
+      >
+        <div className="flex grow flex-col gap-y-5 overflow-y-auto px-6 pb-4 h-full">
+          <div className="flex h-16 shrink-0 items-center">
+            <div className="flex items-center space-x-3">
+              <div className="p-2 bg-black rounded-xl shadow-lg">
+                <Sparkles className="h-6 w-6 text-white" />
+              </div>
+              <div>
+                <h1 className="text-xl font-bold bg-gradient-to-r from-gray-900 to-gray-600 dark:from-white dark:to-gray-300 bg-clip-text text-transparent">
+                  FLOWIX
+                </h1>
+                <p className="text-xs text-muted-foreground">Professional Edition</p>
+              </div>
             </div>
           </div>
-        </div>
-        <nav className="flex flex-1 flex-col">
-          <ul role="list" className="flex flex-1 flex-col gap-y-7">
-            <li>
-              <ul role="list" className="space-y-2">
-                {navigation.map((item) => (
-                  <li key={item.name}>
-                    <Link
-                      href={item.href}
-                      className={cn(
-                        "group flex items-center gap-x-3 rounded-xl p-3 text-sm font-medium transition-all duration-200",
-                        pathname === item.href
-                          ? "bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-950 dark:to-indigo-950 text-blue-700 dark:text-blue-300 shadow-sm border border-blue-200 dark:border-blue-800"
-                          : "text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800 hover:text-gray-900 dark:hover:text-white",
-                      )}
-                    >
-                      <div
+          <nav className="flex flex-1 flex-col">
+            <ul role="list" className="flex flex-1 flex-col gap-y-7">
+              <li>
+                <ul role="list" className="space-y-2">
+                  {navigation.map((item) => (
+                    <li key={item.name}>
+                      <Link
+                        href={item.href}
+                        onClick={() => isMobile && setIsOpen(false)}
                         className={cn(
-                          "flex h-8 w-8 items-center justify-center rounded-lg transition-all duration-200",
+                          "group flex items-center gap-x-3 rounded-xl p-3 text-sm font-medium transition-all duration-200",
                           pathname === item.href
-                            ? `bg-gradient-to-br ${item.gradient} shadow-lg`
-                            : "bg-gray-100 dark:bg-gray-800 group-hover:bg-gray-200 dark:group-hover:bg-gray-700",
+                            ? "bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-950 dark:to-indigo-950 text-black dark:text-blue-300 shadow-sm border border-blue-200 dark:border-blue-800"
+                            : "text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800 hover:text-gray-900 dark:hover:text-white",
                         )}
                       >
-                        <item.icon
+                        <div
                           className={cn(
-                            "h-4 w-4 transition-colors duration-200",
+                            "flex h-8 w-8 items-center justify-center rounded-lg transition-all duration-200",
                             pathname === item.href
-                              ? "text-white"
-                              : "text-gray-600 dark:text-gray-400 group-hover:text-gray-700 dark:group-hover:text-gray-300",
+                              ? `bg-black shadow-lg`
+                              : "bg-gray-100 dark:bg-gray-800 group-hover:bg-gray-200 dark:group-hover:bg-gray-700",
                           )}
-                          aria-hidden="true"
-                        />
-                      </div>
-                      <span className="truncate">{item.name}</span>
-                      {pathname === item.href && (
-                        <div className="ml-auto h-2 w-2 rounded-full bg-blue-600 dark:bg-blue-400" />
-                      )}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </li>
-          </ul>
-        </nav>
+                        >
+                          <item.icon
+                            className={cn(
+                              "h-4 w-4 transition-colors duration-200",
+                              pathname === item.href
+                                ? "text-white"
+                                : "text-gray-600 dark:text-gray-400 group-hover:text-gray-700 dark:group-hover:text-gray-300",
+                            )}
+                            aria-hidden="true"
+                          />
+                        </div>
+                        <span className="truncate">{item.name}</span>
+                        {pathname === item.href && (
+                          <div className="ml-auto h-2 w-2 rounded-full bg-black dark:bg-blue-400" />
+                        )}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </li>
+            </ul>
+          </nav>
+        </div>
       </div>
-    </div>
+    </>
   )
 }

@@ -1,7 +1,6 @@
 "use client"
 
 import type React from "react"
-
 import { useState } from "react"
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
 import { Button } from "@/components/ui/button"
@@ -10,7 +9,7 @@ import { Label } from "@/components/ui/label"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Textarea } from "@/components/ui/textarea"
 import { useToast } from "@/hooks/use-toast"
-import { Building, Users, User, MapPin, Plus } from "lucide-react"
+import { Building, Users, User, MapPin, Plus, X } from "lucide-react"
 
 interface AddDepartmentModalProps {
   children: React.ReactNode
@@ -29,7 +28,7 @@ export function AddDepartmentModal({ children }: AddDepartmentModalProps) {
     await new Promise((resolve) => setTimeout(resolve, 2000))
 
     toast({
-      title: "Department Created!",
+      title: "Department Created",
       description: "New department has been successfully added to the organization.",
     })
 
@@ -40,52 +39,55 @@ export function AddDepartmentModal({ children }: AddDepartmentModalProps) {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>{children}</DialogTrigger>
-      <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto bg-white/95 backdrop-blur-xl border-0 shadow-2xl">
-        <DialogHeader className="pb-6">
-          <DialogTitle className="text-2xl font-bold bg-gradient-to-r from-teal-600 to-cyan-600 bg-clip-text text-transparent flex items-center gap-2">
-            <div className="p-2 bg-gradient-to-r from-teal-500 to-cyan-500 rounded-lg">
-              <Building className="h-5 w-5 text-white" />
+      <DialogContent className="sm:max-w-2xl max-w-[95vw] max-h-[90dvh] overflow-y-auto bg-background p-0 border-none">
+        {/* Mobile close button */}
+        <button 
+          onClick={() => setOpen(false)}
+          className="absolute right-4 top-4 rounded-full p-2 bg-muted hover:bg-muted/80 transition-colors sm:hidden"
+        >
+          <X className="h-4 w-4" />
+          <span className="sr-only">Close</span>
+        </button>
+
+        <DialogHeader className="px-6 pt-6 pb-4 border-b border-muted">
+          <DialogTitle className="flex items-center gap-3">
+            <div className="p-2 bg-muted rounded-lg">
+              <Building className="h-5 w-5" />
             </div>
-            Add Department
+            <span className="text-xl font-medium">Create New Department</span>
           </DialogTitle>
         </DialogHeader>
 
-        <form onSubmit={handleSubmit} className="space-y-6">
+        <form onSubmit={handleSubmit} className="divide-y divide-muted">
           {/* Basic Information */}
-          <div className="bg-gradient-to-r from-teal-50 to-cyan-50 p-6 rounded-xl border border-teal-100">
-            <h3 className="text-lg font-semibold text-gray-800 mb-4 flex items-center gap-2">
-              <Building className="h-5 w-5 text-teal-600" />
+          <div className="p-6 space-y-4">
+            <h3 className="flex items-center gap-2 text-sm font-medium text-muted-foreground">
+              <Building className="h-4 w-4" />
               Department Information
             </h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="space-y-2">
-                <Label htmlFor="dept-name" className="text-sm font-medium text-gray-700">
-                  Department Name *
-                </Label>
+                <Label htmlFor="dept-name">Department Name *</Label>
                 <Input
                   id="dept-name"
                   placeholder="Enter department name"
                   required
-                  className="bg-white/80 border-gray-200 focus:border-teal-400 focus:ring-teal-400"
+                  className="bg-background"
                 />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="dept-code" className="text-sm font-medium text-gray-700">
-                  Department Code *
-                </Label>
+                <Label htmlFor="dept-code">Department Code *</Label>
                 <Input
                   id="dept-code"
                   placeholder="DEPT-001"
                   required
-                  className="bg-white/80 border-gray-200 focus:border-teal-400 focus:ring-teal-400"
+                  className="bg-background"
                 />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="parent-dept" className="text-sm font-medium text-gray-700">
-                  Parent Department
-                </Label>
+                <Label htmlFor="parent-dept">Parent Department</Label>
                 <Select>
-                  <SelectTrigger className="bg-white/80 border-gray-200 focus:border-teal-400 focus:ring-teal-400">
+                  <SelectTrigger className="bg-background">
                     <SelectValue placeholder="Select parent department" />
                   </SelectTrigger>
                   <SelectContent>
@@ -98,11 +100,9 @@ export function AddDepartmentModal({ children }: AddDepartmentModalProps) {
                 </Select>
               </div>
               <div className="space-y-2">
-                <Label htmlFor="dept-type" className="text-sm font-medium text-gray-700">
-                  Department Type
-                </Label>
+                <Label htmlFor="dept-type">Department Type</Label>
                 <Select>
-                  <SelectTrigger className="bg-white/80 border-gray-200 focus:border-teal-400 focus:ring-teal-400">
+                  <SelectTrigger className="bg-background">
                     <SelectValue placeholder="Select type" />
                   </SelectTrigger>
                   <SelectContent>
@@ -117,18 +117,16 @@ export function AddDepartmentModal({ children }: AddDepartmentModalProps) {
           </div>
 
           {/* Management Information */}
-          <div className="bg-gradient-to-r from-blue-50 to-indigo-50 p-6 rounded-xl border border-blue-100">
-            <h3 className="text-lg font-semibold text-gray-800 mb-4 flex items-center gap-2">
-              <User className="h-5 w-5 text-blue-600" />
+          <div className="p-6 space-y-4">
+            <h3 className="flex items-center gap-2 text-sm font-medium text-muted-foreground">
+              <User className="h-4 w-4" />
               Management & Staffing
             </h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="space-y-2">
-                <Label htmlFor="dept-head" className="text-sm font-medium text-gray-700">
-                  Department Head
-                </Label>
+                <Label htmlFor="dept-head">Department Head</Label>
                 <Select>
-                  <SelectTrigger className="bg-white/80 border-gray-200 focus:border-blue-400 focus:ring-blue-400">
+                  <SelectTrigger className="bg-background">
                     <SelectValue placeholder="Select department head" />
                   </SelectTrigger>
                   <SelectContent>
@@ -140,11 +138,9 @@ export function AddDepartmentModal({ children }: AddDepartmentModalProps) {
                 </Select>
               </div>
               <div className="space-y-2">
-                <Label htmlFor="assistant-head" className="text-sm font-medium text-gray-700">
-                  Assistant Head
-                </Label>
+                <Label htmlFor="assistant-head">Assistant Head</Label>
                 <Select>
-                  <SelectTrigger className="bg-white/80 border-gray-200 focus:border-blue-400 focus:ring-blue-400">
+                  <SelectTrigger className="bg-background">
                     <SelectValue placeholder="Select assistant head" />
                   </SelectTrigger>
                   <SelectContent>
@@ -156,30 +152,26 @@ export function AddDepartmentModal({ children }: AddDepartmentModalProps) {
                 </Select>
               </div>
               <div className="space-y-2">
-                <Label htmlFor="current-staff" className="text-sm font-medium text-gray-700">
-                  Current Staff Count
-                </Label>
+                <Label htmlFor="current-staff">Current Staff Count</Label>
                 <div className="relative">
-                  <Users className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
+                  <Users className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
                   <Input
                     id="current-staff"
                     type="number"
                     placeholder="0"
-                    className="pl-10 bg-white/80 border-gray-200 focus:border-blue-400 focus:ring-blue-400"
+                    className="pl-10 bg-background"
                   />
                 </div>
               </div>
               <div className="space-y-2">
-                <Label htmlFor="max-capacity" className="text-sm font-medium text-gray-700">
-                  Maximum Capacity
-                </Label>
+                <Label htmlFor="max-capacity">Maximum Capacity</Label>
                 <div className="relative">
-                  <Users className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
+                  <Users className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
                   <Input
                     id="max-capacity"
                     type="number"
                     placeholder="50"
-                    className="pl-10 bg-white/80 border-gray-200 focus:border-blue-400 focus:ring-blue-400"
+                    className="pl-10 bg-background"
                   />
                 </div>
               </div>
@@ -187,49 +179,41 @@ export function AddDepartmentModal({ children }: AddDepartmentModalProps) {
           </div>
 
           {/* Location & Budget */}
-          <div className="bg-gradient-to-r from-green-50 to-emerald-50 p-6 rounded-xl border border-green-100">
-            <h3 className="text-lg font-semibold text-gray-800 mb-4 flex items-center gap-2">
-              <MapPin className="h-5 w-5 text-green-600" />
+          <div className="p-6 space-y-4">
+            <h3 className="flex items-center gap-2 text-sm font-medium text-muted-foreground">
+              <MapPin className="h-4 w-4" />
               Location & Budget
             </h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="space-y-2">
-                <Label htmlFor="office-location" className="text-sm font-medium text-gray-700">
-                  Office Location
-                </Label>
+                <Label htmlFor="office-location">Office Location</Label>
                 <Input
                   id="office-location"
                   placeholder="Building A, Floor 3"
-                  className="bg-white/80 border-gray-200 focus:border-green-400 focus:ring-green-400"
+                  className="bg-background"
                 />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="cost-center" className="text-sm font-medium text-gray-700">
-                  Cost Center
-                </Label>
+                <Label htmlFor="cost-center">Cost Center</Label>
                 <Input
                   id="cost-center"
                   placeholder="CC-001"
-                  className="bg-white/80 border-gray-200 focus:border-green-400 focus:ring-green-400"
+                  className="bg-background"
                 />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="annual-budget" className="text-sm font-medium text-gray-700">
-                  Annual Budget
-                </Label>
+                <Label htmlFor="annual-budget">Annual Budget</Label>
                 <Input
                   id="annual-budget"
                   type="number"
                   placeholder="500000"
-                  className="bg-white/80 border-gray-200 focus:border-green-400 focus:ring-green-400"
+                  className="bg-background"
                 />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="status" className="text-sm font-medium text-gray-700">
-                  Status
-                </Label>
+                <Label htmlFor="status">Status</Label>
                 <Select defaultValue="active">
-                  <SelectTrigger className="bg-white/80 border-gray-200 focus:border-green-400 focus:ring-green-400">
+                  <SelectTrigger className="bg-background">
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
@@ -244,56 +228,59 @@ export function AddDepartmentModal({ children }: AddDepartmentModalProps) {
           </div>
 
           {/* Description */}
-          <div className="bg-gradient-to-r from-purple-50 to-pink-50 p-6 rounded-xl border border-purple-100">
-            <h3 className="text-lg font-semibold text-gray-800 mb-4">Description & Responsibilities</h3>
+          <div className="p-6 space-y-4">
+            <h3 className="text-sm font-medium text-muted-foreground">
+              Description & Responsibilities
+            </h3>
             <div className="space-y-4">
               <div className="space-y-2">
-                <Label htmlFor="description" className="text-sm font-medium text-gray-700">
-                  Department Description
-                </Label>
+                <Label htmlFor="description">Department Description</Label>
                 <Textarea
                   id="description"
                   placeholder="Describe the department's purpose and main functions..."
-                  className="bg-white/80 border-gray-200 focus:border-purple-400 focus:ring-purple-400"
-                  rows={3}
+                  className="bg-background min-h-[100px]"
                 />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="responsibilities" className="text-sm font-medium text-gray-700">
-                  Key Responsibilities
-                </Label>
+                <Label htmlFor="responsibilities">Key Responsibilities</Label>
                 <Textarea
                   id="responsibilities"
                   placeholder="List the main responsibilities and duties of this department..."
-                  className="bg-white/80 border-gray-200 focus:border-purple-400 focus:ring-purple-400"
-                  rows={3}
+                  className="bg-background min-h-[100px]"
                 />
               </div>
             </div>
           </div>
 
           {/* Submit Button */}
-          <div className="flex justify-end gap-3 pt-6 border-t border-gray-200">
-            <Button type="button" variant="outline" onClick={() => setOpen(false)} className="px-6">
-              Cancel
-            </Button>
-            <Button
-              type="submit"
-              disabled={loading}
-              className="px-6 bg-gradient-to-r from-teal-600 to-cyan-600 hover:from-teal-700 hover:to-cyan-700 text-white shadow-lg"
-            >
-              {loading ? (
-                <>
-                  <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
-                  Creating Department...
-                </>
-              ) : (
-                <>
-                  <Plus className="mr-2 h-4 w-4" />
-                  Create Department
-                </>
-              )}
-            </Button>
+          <div className="sticky bottom-0 bg-background p-4 border-t border-muted shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.05)]">
+            <div className="flex justify-end gap-3">
+              <Button 
+                type="button" 
+                variant="outline" 
+                onClick={() => setOpen(false)} 
+                className="px-6"
+              >
+                Cancel
+              </Button>
+              <Button
+                type="submit"
+                disabled={loading}
+                className="px-6 bg-black"
+              >
+                {loading ? (
+                  <>
+                    <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
+                    Creating...
+                  </>
+                ) : (
+                  <>
+                    <Plus className="mr-2 h-4 w-4" />
+                    Create Department
+                  </>
+                )}
+              </Button>
+            </div>
           </div>
         </form>
       </DialogContent>

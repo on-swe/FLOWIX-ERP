@@ -1,7 +1,6 @@
 "use client"
 
 import type React from "react"
-
 import { useState } from "react"
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
 import { Button } from "@/components/ui/button"
@@ -10,7 +9,7 @@ import { Label } from "@/components/ui/label"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Textarea } from "@/components/ui/textarea"
 import { useToast } from "@/hooks/use-toast"
-import { Package, Barcode, MapPin, AlertTriangle, Plus } from "lucide-react"
+import { Package, Barcode, MapPin, AlertTriangle, Plus, X } from "lucide-react"
 
 interface AddInventoryModalProps {
   children: React.ReactNode
@@ -29,7 +28,7 @@ export function AddInventoryModal({ children }: AddInventoryModalProps) {
     await new Promise((resolve) => setTimeout(resolve, 2000))
 
     toast({
-      title: "Inventory Item Added!",
+      title: "Inventory Item Added",
       description: "New inventory item has been successfully added to the system.",
     })
 
@@ -40,55 +39,58 @@ export function AddInventoryModal({ children }: AddInventoryModalProps) {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>{children}</DialogTrigger>
-      <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto bg-white/95 backdrop-blur-xl border-0 shadow-2xl">
-        <DialogHeader className="pb-6">
-          <DialogTitle className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent flex items-center gap-2">
-            <div className="p-2 bg-gradient-to-r from-blue-500 to-purple-500 rounded-lg">
-              <Package className="h-5 w-5 text-white" />
+      <DialogContent className="sm:max-w-2xl max-w-[95vw] max-h-[90dvh] overflow-y-auto bg-background p-0 border border-muted-foreground/20">
+        {/* Mobile close button - only shown on mobile */}
+        <button 
+          onClick={() => setOpen(false)}
+          className="absolute right-4 top-4 rounded-full p-2 bg-muted hover:bg-muted/80 transition-colors sm:hidden"
+        >
+          <X className="h-4 w-4" />
+          <span className="sr-only">Close</span>
+        </button>
+
+        <DialogHeader className="px-6 pt-6 pb-4 border-b border-muted-foreground/10">
+          <DialogTitle className="flex items-center gap-3">
+            <div className="p-2 bg-muted rounded-lg">
+              <Package className="h-5 w-5" />
             </div>
-            Add Inventory Item
+            <span className="text-xl font-medium">Add Inventory Item</span>
           </DialogTitle>
         </DialogHeader>
 
-        <form onSubmit={handleSubmit} className="space-y-6">
+        <form onSubmit={handleSubmit} className="divide-y divide-muted-foreground/10">
           {/* Basic Information */}
-          <div className="bg-gradient-to-r from-blue-50 to-purple-50 p-6 rounded-xl border border-blue-100">
-            <h3 className="text-lg font-semibold text-gray-800 mb-4 flex items-center gap-2">
-              <Package className="h-5 w-5 text-blue-600" />
+          <div className="p-6 space-y-4">
+            <h3 className="text-sm font-medium uppercase tracking-wider text-muted-foreground flex items-center gap-2">
+              <Package className="h-4 w-4" />
               Basic Information
             </h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="space-y-2">
-                <Label htmlFor="item-name" className="text-sm font-medium text-gray-700">
-                  Item Name *
-                </Label>
+                <Label htmlFor="item-name">Item Name *</Label>
                 <Input
                   id="item-name"
                   placeholder="Enter item name"
                   required
-                  className="bg-white/80 border-gray-200 focus:border-blue-400 focus:ring-blue-400"
+                  className="border-muted-foreground/30 focus:border-muted-foreground/50"
                 />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="sku" className="text-sm font-medium text-gray-700">
-                  SKU *
-                </Label>
+                <Label htmlFor="sku">SKU *</Label>
                 <div className="relative">
-                  <Barcode className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
+                  <Barcode className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
                   <Input
                     id="sku"
                     placeholder="SKU-001"
                     required
-                    className="pl-10 bg-white/80 border-gray-200 focus:border-blue-400 focus:ring-blue-400"
+                    className="pl-10 border-muted-foreground/30 focus:border-muted-foreground/50"
                   />
                 </div>
               </div>
               <div className="space-y-2">
-                <Label htmlFor="category" className="text-sm font-medium text-gray-700">
-                  Category *
-                </Label>
+                <Label htmlFor="category">Category *</Label>
                 <Select required>
-                  <SelectTrigger className="bg-white/80 border-gray-200 focus:border-blue-400 focus:ring-blue-400">
+                  <SelectTrigger className="border-muted-foreground/30 focus:border-muted-foreground/50">
                     <SelectValue placeholder="Select category" />
                   </SelectTrigger>
                   <SelectContent>
@@ -101,11 +103,9 @@ export function AddInventoryModal({ children }: AddInventoryModalProps) {
                 </Select>
               </div>
               <div className="space-y-2">
-                <Label htmlFor="unit" className="text-sm font-medium text-gray-700">
-                  Unit of Measure
-                </Label>
+                <Label htmlFor="unit">Unit of Measure</Label>
                 <Select>
-                  <SelectTrigger className="bg-white/80 border-gray-200 focus:border-blue-400 focus:ring-blue-400">
+                  <SelectTrigger className="border-muted-foreground/30 focus:border-muted-foreground/50">
                     <SelectValue placeholder="Select unit" />
                   </SelectTrigger>
                   <SelectContent>
@@ -121,72 +121,62 @@ export function AddInventoryModal({ children }: AddInventoryModalProps) {
           </div>
 
           {/* Stock Information */}
-          <div className="bg-gradient-to-r from-green-50 to-blue-50 p-6 rounded-xl border border-green-100">
-            <h3 className="text-lg font-semibold text-gray-800 mb-4 flex items-center gap-2">
-              <AlertTriangle className="h-5 w-5 text-green-600" />
+          <div className="p-6 space-y-4">
+            <h3 className="text-sm font-medium uppercase tracking-wider text-muted-foreground flex items-center gap-2">
+              <AlertTriangle className="h-4 w-4" />
               Stock Information
             </h3>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               <div className="space-y-2">
-                <Label htmlFor="current-stock" className="text-sm font-medium text-gray-700">
-                  Current Stock *
-                </Label>
+                <Label htmlFor="current-stock">Current Stock *</Label>
                 <Input
                   id="current-stock"
                   type="number"
                   placeholder="0"
                   required
-                  className="bg-white/80 border-gray-200 focus:border-green-400 focus:ring-green-400"
+                  className="border-muted-foreground/30 focus:border-muted-foreground/50"
                 />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="min-stock" className="text-sm font-medium text-gray-700">
-                  Minimum Stock Level
-                </Label>
+                <Label htmlFor="min-stock">Minimum Stock Level</Label>
                 <Input
                   id="min-stock"
                   type="number"
                   placeholder="10"
-                  className="bg-white/80 border-gray-200 focus:border-green-400 focus:ring-green-400"
+                  className="border-muted-foreground/30 focus:border-muted-foreground/50"
                 />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="max-stock" className="text-sm font-medium text-gray-700">
-                  Maximum Stock Level
-                </Label>
+                <Label htmlFor="max-stock">Maximum Stock Level</Label>
                 <Input
                   id="max-stock"
                   type="number"
                   placeholder="1000"
-                  className="bg-white/80 border-gray-200 focus:border-green-400 focus:ring-green-400"
+                  className="border-muted-foreground/30 focus:border-muted-foreground/50"
                 />
               </div>
             </div>
           </div>
 
           {/* Location & Notes */}
-          <div className="bg-gradient-to-r from-purple-50 to-pink-50 p-6 rounded-xl border border-purple-100">
-            <h3 className="text-lg font-semibold text-gray-800 mb-4 flex items-center gap-2">
-              <MapPin className="h-5 w-5 text-purple-600" />
+          <div className="p-6 space-y-4">
+            <h3 className="text-sm font-medium uppercase tracking-wider text-muted-foreground flex items-center gap-2">
+              <MapPin className="h-4 w-4" />
               Location & Notes
             </h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="space-y-2">
-                <Label htmlFor="location" className="text-sm font-medium text-gray-700">
-                  Storage Location
-                </Label>
+                <Label htmlFor="location">Storage Location</Label>
                 <Input
                   id="location"
                   placeholder="Warehouse A - Shelf 1"
-                  className="bg-white/80 border-gray-200 focus:border-purple-400 focus:ring-purple-400"
+                  className="border-muted-foreground/30 focus:border-muted-foreground/50"
                 />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="supplier" className="text-sm font-medium text-gray-700">
-                  Primary Supplier
-                </Label>
+                <Label htmlFor="supplier">Primary Supplier</Label>
                 <Select>
-                  <SelectTrigger className="bg-white/80 border-gray-200 focus:border-purple-400 focus:ring-purple-400">
+                  <SelectTrigger className="border-muted-foreground/30 focus:border-muted-foreground/50">
                     <SelectValue placeholder="Select supplier" />
                   </SelectTrigger>
                   <SelectContent>
@@ -198,40 +188,44 @@ export function AddInventoryModal({ children }: AddInventoryModalProps) {
               </div>
             </div>
             <div className="space-y-2 mt-4">
-              <Label htmlFor="notes" className="text-sm font-medium text-gray-700">
-                Notes
-              </Label>
+              <Label htmlFor="notes">Notes</Label>
               <Textarea
                 id="notes"
                 placeholder="Additional notes about this inventory item..."
-                className="bg-white/80 border-gray-200 focus:border-purple-400 focus:ring-purple-400"
-                rows={3}
+                className="border-muted-foreground/30 focus:border-muted-foreground/50 min-h-[100px]"
               />
             </div>
           </div>
 
-          {/* Submit Button */}
-          <div className="flex justify-end gap-3 pt-6 border-t border-gray-200">
-            <Button type="button" variant="outline" onClick={() => setOpen(false)} className="px-6">
-              Cancel
-            </Button>
-            <Button
-              type="submit"
-              disabled={loading}
-              className="px-6 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white shadow-lg"
-            >
-              {loading ? (
-                <>
-                  <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
-                  Adding Item...
-                </>
-              ) : (
-                <>
-                  <Plus className="mr-2 h-4 w-4" />
-                  Add Inventory Item
-                </>
-              )}
-            </Button>
+          {/* Submit Button - Full width on mobile, auto on desktop */}
+          <div className="sticky bottom-0 bg-background p-4 border-t border-muted-foreground/10 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.05)]">
+            <div className="grid grid-cols-2 gap-3 w-full">
+              <Button 
+                type="button" 
+                variant="outline" 
+                onClick={() => setOpen(false)}
+                className="w-full border-muted-foreground/30 hover:bg-muted"
+              >
+                Cancel
+              </Button>
+              <Button
+                type="submit"
+                disabled={loading}
+                className="w-full bg-foreground text-background hover:bg-foreground/90"
+              >
+                {loading ? (
+                  <>
+                    <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
+                    Adding...
+                  </>
+                ) : (
+                  <>
+                    <Plus className="mr-2 h-4 w-4" />
+                    Add Item
+                  </>
+                )}
+              </Button>
+            </div>
           </div>
         </form>
       </DialogContent>

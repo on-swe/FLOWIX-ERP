@@ -1,7 +1,13 @@
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
-import { Badge } from "@/components/ui/badge"
-import Link from "next/link"
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import Link from "next/link";
 import {
   Package,
   ShoppingCart,
@@ -16,286 +22,300 @@ import {
   Truck,
   Building,
   CheckCircle,
-  Star,
+  ChevronRight,
   ArrowRight,
-} from "lucide-react"
+  Zap,
+  Database,
+  Globe,
+  ShieldCheck,
+  Cpu,
+  LayoutDashboard,
+} from "lucide-react";
 
 const modules = [
   {
     name: "Dashboard",
-    description: "Executive overview with key metrics and insights",
+    description: "Executive overview with key metrics",
     href: "/dashboard",
-    icon: BarChart3,
-    features: ["Real-time KPIs", "Activity feed", "Quick actions", "System alerts"],
-    status: "Complete",
+    icon: LayoutDashboard,
+    features: ["Real-time KPIs", "Activity feed", "System alerts"],
   },
   {
-    name: "Inventory Management",
-    description: "Track stock levels, manage products, and monitor inventory",
+    name: "Inventory",
+    description: "Track stock levels and products",
     href: "/dashboard/inventory",
     icon: Package,
-    features: ["Stock tracking", "Low stock alerts", "Inventory reports", "Product management"],
-    status: "Complete",
+    features: ["Stock tracking", "Low stock alerts", "Product management"],
   },
   {
     name: "Product Catalog",
-    description: "Manage product information, variants, and categories",
+    description: "Manage product information",
     href: "/dashboard/products",
     icon: Box,
-    features: ["Product variants", "Category management", "Pricing", "Product lifecycle"],
-    status: "Complete",
+    features: ["Product variants", "Category management", "Pricing"],
   },
   {
-    name: "Sales Management",
-    description: "Handle sales orders, quotes, and customer transactions",
+    name: "Sales",
+    description: "Handle orders and transactions",
     href: "/dashboard/sales",
     icon: ShoppingCart,
-    features: ["Sales orders", "Quotations", "Invoice generation", "Sales analytics"],
-    status: "Complete",
+    features: ["Sales orders", "Quotations", "Invoice generation"],
   },
   {
-    name: "Customer Management",
-    description: "Manage customer relationships and interaction history",
+    name: "Customers",
+    description: "Manage customer relationships",
     href: "/dashboard/customers",
     icon: Users,
-    features: ["Customer profiles", "Contact management", "Purchase history", "CRM integration"],
-    status: "Complete",
+    features: ["Customer profiles", "Purchase history", "CRM"],
   },
   {
-    name: "Vendor Management",
-    description: "Manage supplier relationships and vendor performance",
+    name: "Vendors",
+    description: "Manage supplier relationships",
     href: "/dashboard/vendors",
     icon: Building2,
-    features: ["Vendor profiles", "Performance tracking", "Contract management", "Rating system"],
-    status: "Complete",
+    features: ["Vendor profiles", "Performance tracking", "Contracts"],
   },
   {
     name: "Procurement",
-    description: "Handle purchase orders and procurement processes",
+    description: "Purchase order management",
     href: "/dashboard/procurement",
     icon: Truck,
-    features: ["Purchase orders", "Vendor selection", "Delivery tracking", "Cost analysis"],
-    status: "Complete",
+    features: ["PO management", "Vendor selection", "Delivery tracking"],
   },
   {
-    name: "Finance & Accounting",
-    description: "Manage financial transactions and accounting operations",
+    name: "Finance",
+    description: "Accounting operations",
     href: "/dashboard/finance",
     icon: CreditCard,
-    features: ["Chart of accounts", "Transaction management", "Financial reports", "Budget tracking"],
-    status: "Complete",
+    features: ["Chart of accounts", "Transactions", "Financial reports"],
   },
   {
-    name: "Human Resources",
-    description: "Employee management, payroll, and HR processes",
+    name: "HR",
+    description: "Employee management",
     href: "/dashboard/hr",
     icon: UserCheck,
-    features: ["Employee profiles", "Attendance tracking", "Payroll management", "Performance reviews"],
-    status: "Complete",
+    features: ["Employee profiles", "Payroll", "Performance reviews"],
   },
   {
-    name: "Project Management",
-    description: "Track projects, tasks, and team collaboration",
+    name: "Projects",
+    description: "Task and team collaboration",
     href: "/dashboard/projects",
     icon: Briefcase,
-    features: ["Project tracking", "Task management", "Team collaboration", "Time tracking"],
-    status: "Complete",
+    features: ["Project tracking", "Task management", "Time tracking"],
   },
   {
-    name: "Support & Helpdesk",
-    description: "Customer support tickets and help desk operations",
+    name: "Support",
+    description: "Help desk operations",
     href: "/dashboard/support",
     icon: HelpCircle,
-    features: ["Ticket management", "SLA tracking", "Knowledge base", "Customer communication"],
-    status: "Complete",
+    features: ["Ticket management", "SLA tracking", "Knowledge base"],
   },
   {
     name: "Organization",
-    description: "Manage organizational structure and departments",
+    description: "Company structure",
     href: "/dashboard/organization",
     icon: Building,
-    features: ["Department management", "Organizational chart", "Budget allocation", "Location management"],
-    status: "Complete",
+    features: ["Departments", "Org chart", "Location management"],
   },
   {
-    name: "Reports & Analytics",
-    description: "Generate insights and business intelligence",
+    name: "Reports",
+    description: "Business intelligence",
     href: "/dashboard/reports",
     icon: BarChart3,
-    features: ["Custom reports", "Scheduled reports", "Data visualization", "Export capabilities"],
-    status: "Complete",
+    features: ["Custom reports", "Data visualization", "Exports"],
   },
-]
+];
 
 const features = [
-  "Multi-tenant architecture with complete data isolation",
-  "Role-based access control (RBAC) with granular permissions",
-  "Real-time notifications and activity tracking",
-  "Comprehensive audit logging for compliance",
-  "Multi-language and currency support",
-  "Data import/export capabilities (CSV, Excel, JSON, PDF)",
-  "Responsive design with dark mode support",
-  "Modular architecture for easy customization",
-  "Enterprise-grade security features",
-  "Complete REST API with documentation",
-]
+  {
+    title: "Enterprise Security",
+    description: "RBAC, audit logs, and multi-tenant isolation",
+    icon: ShieldCheck,
+  },
+  {
+    title: "Real-time Analytics",
+    description: "Live dashboards with up-to-the-minute data",
+    icon: BarChart3,
+  },
+  {
+    title: "Global Ready",
+    description: "Multi-language and multi-currency support",
+    icon: Globe,
+  },
+  {
+    title: "High Performance",
+    description: "Optimized for enterprise-scale operations",
+    icon: Zap,
+  },
+];
 
 export default function DemoPage() {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800">
-      <div className="container mx-auto px-4 py-12">
-        {/* Header */}
-        <div className="text-center mb-12">
-          <h1 className="text-4xl font-bold text-gray-900 dark:text-white mb-4">Enterprise ERP System</h1>
-          <p className="text-xl text-gray-600 dark:text-gray-300 mb-8 max-w-3xl mx-auto">
-            A comprehensive, modular Enterprise Resource Planning system built with Next.js, TypeScript, and modern web
-            technologies. Explore all modules and features without authentication.
-          </p>
-          <div className="flex flex-wrap justify-center gap-2 mb-8">
-            <Badge variant="secondary" className="bg-green-100 text-green-800">
-              <CheckCircle className="w-3 h-3 mr-1" />
-              13+ Core Modules
+    <div className="min-h-screen bg-white text-black">
+      {/* Hero Section */}
+      <div className="relative overflow-hidden border-b border-gray-200">
+        <div className="container mx-auto px-4 py-32">
+          <div className="max-w-3xl mx-auto text-center">
+            <Badge variant="outline" className="mb-6 border-black">
+              <Zap className="w-4 h-4 mr-2" />
+              FLOWIX
             </Badge>
-            <Badge variant="secondary" className="bg-blue-100 text-blue-800">
-              <Star className="w-3 h-3 mr-1" />
-              Enterprise Ready
-            </Badge>
-            <Badge variant="secondary" className="bg-purple-100 text-purple-800">
-              Multi-Tenant
-            </Badge>
-            <Badge variant="secondary" className="bg-orange-100 text-orange-800">
-              Mobile Responsive
-            </Badge>
-          </div>
-          <Link href="/dashboard">
-            <Button size="lg" className="bg-blue-600 hover:bg-blue-700">
-              Explore Dashboard
-              <ArrowRight className="ml-2 h-4 w-4" />
-            </Button>
-          </Link>
-        </div>
-
-        {/* Key Features */}
-        <Card className="mb-12">
-          <CardHeader>
-            <CardTitle className="text-2xl">Key Features</CardTitle>
-            <CardDescription>Enterprise-grade features built for scalability and performance</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div className="grid md:grid-cols-2 gap-4">
-              {features.map((feature, index) => (
-                <div key={index} className="flex items-start space-x-2">
-                  <CheckCircle className="h-5 w-5 text-green-600 mt-0.5 flex-shrink-0" />
-                  <span className="text-sm text-gray-700 dark:text-gray-300">{feature}</span>
-                </div>
-              ))}
+            <h1 className="text-6xl font-bold mb-6 tracking-tight">
+              <span className="bg-black text-white px-2">MODERN</span> BUSINESS
+              OPERATIONS
+            </h1>
+            <p className="text-xl text-gray-700 mb-8">
+              A complete, modular ERP platform designed for efficiency and
+              scalability.
+            </p>
+            <div className="flex justify-center gap-4">
+              <Link href="/dashboard">
+                <Button className="bg-black text-white hover:bg-gray-900">
+                  Explore Demo
+                  <ArrowRight className="ml-2 h-4 w-4" />
+                </Button>
+              </Link>
+              <Link href="#modules">
+                <Button variant="outline" className="border-black">
+                  View Modules
+                </Button>
+              </Link>
             </div>
-          </CardContent>
-        </Card>
+          </div>
+        </div>
+      </div>
 
-        {/* Modules Grid */}
-        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-          {modules.map((module) => (
-            <Card key={module.name} className="hover:shadow-lg transition-shadow">
-              <CardHeader>
-                <div className="flex items-center justify-between">
-                  <module.icon className="h-8 w-8 text-blue-600" />
-                  <Badge variant="secondary" className="bg-green-100 text-green-800">
-                    {module.status}
-                  </Badge>
-                </div>
-                <CardTitle className="text-lg">{module.name}</CardTitle>
-                <CardDescription>{module.description}</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-3">
-                  <div>
-                    <h4 className="text-sm font-medium text-gray-900 dark:text-white mb-2">Features:</h4>
-                    <ul className="text-sm text-gray-600 dark:text-gray-400 space-y-1">
-                      {module.features.map((feature, index) => (
-                        <li key={index} className="flex items-center space-x-2">
-                          <div className="w-1.5 h-1.5 bg-blue-600 rounded-full"></div>
-                          <span>{feature}</span>
-                        </li>
-                      ))}
-                    </ul>
+      {/* Features */}
+      <div className="py-20 bg-gray-50">
+        <div className="container mx-auto px-4">
+          <div className="max-w-2xl mx-auto text-center mb-16">
+            <h2 className="text-4xl font-bold mb-4">Designed for Efficiency</h2>
+            <p className="text-gray-700">
+              Every feature built for enterprise performance.
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-2 gap-8">
+            {features.map((feature, index) => (
+              <div key={index} className="group">
+                <div className="flex items-start gap-6">
+                  <div className="p-3 border border-black rounded-full">
+                    <feature.icon className="w-6 h-6" />
                   </div>
+                  <div>
+                    <h3 className="text-xl font-bold mb-2">{feature.title}</h3>
+                    <p className="text-gray-700">{feature.description}</p>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* All Modules */}
+      <div id="modules" className="py-20">
+        <div className="container mx-auto px-4">
+          <div className="max-w-2xl mx-auto text-center mb-16">
+            <h2 className="text-4xl font-bold mb-4">Complete Business Suite</h2>
+            <p className="text-gray-700">
+              Every function your business needs in one system.
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {modules.map((module) => (
+              <Card
+                key={module.name}
+                className="border-black hover:shadow-lg transition-all"
+              >
+                <CardHeader>
+                  <div className="flex items-center gap-4 mb-4">
+                    <div className="p-2 border border-black rounded-lg">
+                      <module.icon className="w-5 h-5" />
+                    </div>
+                    <CardTitle className="text-xl">{module.name}</CardTitle>
+                  </div>
+                  <CardDescription>{module.description}</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <ul className="space-y-2 mb-4">
+                    {module.features.map((feature, index) => (
+                      <li key={index} className="flex items-center">
+                        <CheckCircle className="w-4 h-4 mr-2" />
+                        <span>{feature}</span>
+                      </li>
+                    ))}
+                  </ul>
                   <Link href={module.href}>
-                    <Button variant="outline" className="w-full bg-transparent">
-                      Explore Module
-                      <ArrowRight className="ml-2 h-4 w-4" />
+                    <Button variant="outline" className="w-full border-black">
+                      Explore
+                      <ChevronRight className="ml-2 h-4 w-4" />
                     </Button>
                   </Link>
-                </div>
-              </CardContent>
-            </Card>
-          ))}
+                </CardContent>
+              </Card>
+            ))}
+          </div>
         </div>
+      </div>
 
-        {/* Technical Stack */}
-        <Card className="mt-12">
-          <CardHeader>
-            <CardTitle className="text-2xl">Technical Stack</CardTitle>
-            <CardDescription>Built with modern technologies for performance and scalability</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div className="grid md:grid-cols-4 gap-6">
-              <div>
-                <h4 className="font-semibold mb-2">Frontend</h4>
-                <ul className="text-sm text-gray-600 dark:text-gray-400 space-y-1">
-                  <li>Next.js 14+ (App Router)</li>
-                  <li>TypeScript</li>
-                  <li>Tailwind CSS</li>
-                  <li>shadcn/ui Components</li>
-                </ul>
-              </div>
-              <div>
-                <h4 className="font-semibold mb-2">Backend</h4>
-                <ul className="text-sm text-gray-600 dark:text-gray-400 space-y-1">
-                  <li>Next.js API Routes</li>
-                  <li>PostgreSQL Database</li>
-                  <li>Prisma ORM</li>
-                  <li>Server Actions</li>
-                </ul>
-              </div>
-              <div>
-                <h4 className="font-semibold mb-2">Security</h4>
-                <ul className="text-sm text-gray-600 dark:text-gray-400 space-y-1">
-                  <li>NextAuth.js</li>
-                  <li>RBAC System</li>
-                  <li>Audit Logging</li>
-                  <li>Multi-tenant Isolation</li>
-                </ul>
-              </div>
-              <div>
-                <h4 className="font-semibold mb-2">Features</h4>
-                <ul className="text-sm text-gray-600 dark:text-gray-400 space-y-1">
-                  <li>Real-time Notifications</li>
-                  <li>Data Import/Export</li>
-                  <li>Internationalization</li>
-                  <li>Responsive Design</li>
-                </ul>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-
-        {/* Footer */}
-        <div className="text-center mt-12 pt-8 border-t border-gray-200 dark:border-gray-700">
-          <p className="text-gray-600 dark:text-gray-400">
-            This is a demonstration of a complete Enterprise ERP system. All modules are fully functional with mock
-            data.
+      {/* CTA */}
+      <div className="py-20 bg-black text-white">
+        <div className="container mx-auto px-4 text-center">
+          <h2 className="text-4xl font-bold mb-6">
+            Ready to Transform Your Business?
+          </h2>
+          <p className="text-xl text-gray-300 mb-8 max-w-2xl mx-auto">
+            Experience the power of a modern ERP system.
           </p>
-          <div className="mt-4">
+          <div className="flex justify-center gap-4">
             <Link href="/dashboard">
-              <Button variant="outline">
-                Start Exploring
+              <Button className="bg-white text-black hover:bg-gray-100">
+                Explore Demo
                 <ArrowRight className="ml-2 h-4 w-4" />
+              </Button>
+            </Link>
+            <Link href="#">
+              <Button
+                variant="outline"
+                className="border border-white text-white bg-transparent"
+              >
+                Contact Sales
               </Button>
             </Link>
           </div>
         </div>
       </div>
+
+      {/* Footer */}
+      <div className="py-12 border-t border-gray-200">
+        <div className="container mx-auto px-4 text-center">
+          <p className="text-gray-700 mb-6">
+            A fully functional ERP demo with mock data.
+          </p>
+          <Link href="/dashboard">
+            <Button variant="outline" className="border-black">
+              Start Exploring
+              <ArrowRight className="ml-2 h-4 w-4" />
+            </Button>
+          </Link>
+        </div>
+        <div className="pt-6 md:pt-8 mt-8 w-[90%] mx-auto border-t border-[#cdcdcd] text-center text-sm sm:text-base">
+          <p className="mb-2">
+            &copy; 2025 <strong>FLOWIX</strong>. All rights reserved.
+          </p>
+          <p>
+            Designed and Developed by{" "}
+            <Link
+              href="https://raqeem-eg.vercel.app"
+              className="hover:underline"
+            >
+              <strong>Raqeem - رَقيم</strong>
+            </Link>
+          </p>
+        </div>
+      </div>
     </div>
-  )
+  );
 }

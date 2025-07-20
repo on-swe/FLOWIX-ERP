@@ -1,7 +1,6 @@
 "use client"
 
 import type React from "react"
-
 import { useState } from "react"
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
 import { Button } from "@/components/ui/button"
@@ -11,7 +10,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Textarea } from "@/components/ui/textarea"
 import { Checkbox } from "@/components/ui/checkbox"
 import { useToast } from "@/hooks/use-toast"
-import { BarChart3, Calendar, Filter, FileText, Plus } from "lucide-react"
+import { BarChart3, Calendar, Filter, FileText, Plus, X } from "lucide-react"
 
 interface AddReportModalProps {
   children: React.ReactNode
@@ -39,7 +38,7 @@ export function AddReportModal({ children }: AddReportModalProps) {
     await new Promise((resolve) => setTimeout(resolve, 2000))
 
     toast({
-      title: "Report Created!",
+      title: "Report Created",
       description: "Custom report has been generated and is ready for viewing.",
     })
 
@@ -50,41 +49,46 @@ export function AddReportModal({ children }: AddReportModalProps) {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>{children}</DialogTrigger>
-      <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto bg-white/95 backdrop-blur-xl border-0 shadow-2xl">
-        <DialogHeader className="pb-6">
-          <DialogTitle className="text-2xl font-bold bg-gradient-to-r from-emerald-600 to-teal-600 bg-clip-text text-transparent flex items-center gap-2">
-            <div className="p-2 bg-gradient-to-r from-emerald-500 to-teal-500 rounded-lg">
-              <BarChart3 className="h-5 w-5 text-white" />
+      <DialogContent className="sm:max-w-3xl max-w-[95vw] max-h-[90dvh] overflow-y-auto bg-background border border-muted-foreground/20">
+        {/* Mobile close button */}
+        <button 
+          onClick={() => setOpen(false)}
+          className="absolute right-4 top-4 rounded-sm opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 sm:hidden"
+        >
+          <X className="h-5 w-5" />
+          <span className="sr-only">Close</span>
+        </button>
+
+        <DialogHeader className="border-b border-muted-foreground/10 pb-4">
+          <DialogTitle className="flex items-center gap-3">
+            <div className="p-2 bg-muted rounded-lg">
+              <BarChart3 className="h-5 w-5" />
             </div>
-            Create Custom Report
+            <span className="text-xl font-medium">Create Custom Report</span>
           </DialogTitle>
         </DialogHeader>
 
-        <form onSubmit={handleSubmit} className="space-y-6">
+        <form onSubmit={handleSubmit} className="divide-y divide-muted-foreground/10">
           {/* Report Information */}
-          <div className="bg-gradient-to-r from-emerald-50 to-teal-50 p-6 rounded-xl border border-emerald-100">
-            <h3 className="text-lg font-semibold text-gray-800 mb-4 flex items-center gap-2">
-              <FileText className="h-5 w-5 text-emerald-600" />
+          <div className=" space-y-4">
+            <h3 className="text-sm font-medium uppercase tracking-wider text-muted-foreground flex items-center gap-2">
+              <FileText className="h-4 w-4" />
               Report Information
             </h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="space-y-2">
-                <Label htmlFor="report-name" className="text-sm font-medium text-gray-700">
-                  Report Name *
-                </Label>
+                <Label htmlFor="report-name">Report Name *</Label>
                 <Input
                   id="report-name"
                   placeholder="Enter report name"
                   required
-                  className="bg-white/80 border-gray-200 focus:border-emerald-400 focus:ring-emerald-400"
+                  className="border-muted-foreground/30 focus:border-muted-foreground/50"
                 />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="report-type" className="text-sm font-medium text-gray-700">
-                  Report Type *
-                </Label>
+                <Label htmlFor="report-type">Report Type *</Label>
                 <Select required>
-                  <SelectTrigger className="bg-white/80 border-gray-200 focus:border-emerald-400 focus:ring-emerald-400">
+                  <SelectTrigger className="border-muted-foreground/30 focus:border-muted-foreground/50">
                     <SelectValue placeholder="Select report type" />
                   </SelectTrigger>
                   <SelectContent>
@@ -97,11 +101,9 @@ export function AddReportModal({ children }: AddReportModalProps) {
                 </Select>
               </div>
               <div className="space-y-2">
-                <Label htmlFor="frequency" className="text-sm font-medium text-gray-700">
-                  Frequency
-                </Label>
+                <Label htmlFor="frequency">Frequency</Label>
                 <Select>
-                  <SelectTrigger className="bg-white/80 border-gray-200 focus:border-emerald-400 focus:ring-emerald-400">
+                  <SelectTrigger className="border-muted-foreground/30 focus:border-muted-foreground/50">
                     <SelectValue placeholder="Select frequency" />
                   </SelectTrigger>
                   <SelectContent>
@@ -115,11 +117,9 @@ export function AddReportModal({ children }: AddReportModalProps) {
                 </Select>
               </div>
               <div className="space-y-2">
-                <Label htmlFor="format" className="text-sm font-medium text-gray-700">
-                  Output Format
-                </Label>
+                <Label htmlFor="format">Output Format</Label>
                 <Select defaultValue="pdf">
-                  <SelectTrigger className="bg-white/80 border-gray-200 focus:border-emerald-400 focus:ring-emerald-400">
+                  <SelectTrigger className="border-muted-foreground/30 focus:border-muted-foreground/50">
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
@@ -134,9 +134,9 @@ export function AddReportModal({ children }: AddReportModalProps) {
           </div>
 
           {/* Data Sources */}
-          <div className="bg-gradient-to-r from-blue-50 to-indigo-50 p-6 rounded-xl border border-blue-100">
-            <h3 className="text-lg font-semibold text-gray-800 mb-4 flex items-center gap-2">
-              <Filter className="h-5 w-5 text-blue-600" />
+          <div className=" space-y-4 my-4">
+            <h3 className="text-sm font-medium uppercase tracking-wider text-muted-foreground flex items-center gap-2">
+              <Filter className="h-4 w-4" />
               Data Sources
             </h3>
             <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
@@ -157,7 +157,7 @@ export function AddReportModal({ children }: AddReportModalProps) {
                     checked={selectedModules.includes(module.id)}
                     onCheckedChange={(checked) => handleModuleChange(module.id, checked as boolean)}
                   />
-                  <Label htmlFor={module.id} className="text-sm font-medium text-gray-700">
+                  <Label htmlFor={module.id} className="text-sm">
                     {module.label}
                   </Label>
                 </div>
@@ -166,44 +166,38 @@ export function AddReportModal({ children }: AddReportModalProps) {
           </div>
 
           {/* Date Range */}
-          <div className="bg-gradient-to-r from-purple-50 to-pink-50 p-6 rounded-xl border border-purple-100">
-            <h3 className="text-lg font-semibold text-gray-800 mb-4 flex items-center gap-2">
-              <Calendar className="h-5 w-5 text-purple-600" />
+          <div className=" space-y-4 my-4">
+            <h3 className="text-sm font-medium uppercase tracking-wider text-muted-foreground flex items-center gap-2">
+              <Calendar className="h-4 w-4" />
               Date Range & Filters
             </h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="space-y-2">
-                <Label htmlFor="start-date" className="text-sm font-medium text-gray-700">
-                  Start Date
-                </Label>
+                <Label htmlFor="start-date">Start Date</Label>
                 <div className="relative">
-                  <Calendar className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
+                  <Calendar className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
                   <Input
                     id="start-date"
                     type="date"
-                    className="pl-10 bg-white/80 border-gray-200 focus:border-purple-400 focus:ring-purple-400"
+                    className="pl-10 border-muted-foreground/30 focus:border-muted-foreground/50"
                   />
                 </div>
               </div>
               <div className="space-y-2">
-                <Label htmlFor="end-date" className="text-sm font-medium text-gray-700">
-                  End Date
-                </Label>
+                <Label htmlFor="end-date">End Date</Label>
                 <div className="relative">
-                  <Calendar className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
+                  <Calendar className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
                   <Input
                     id="end-date"
                     type="date"
-                    className="pl-10 bg-white/80 border-gray-200 focus:border-purple-400 focus:ring-purple-400"
+                    className="pl-10 border-muted-foreground/30 focus:border-muted-foreground/50"
                   />
                 </div>
               </div>
               <div className="space-y-2">
-                <Label htmlFor="department-filter" className="text-sm font-medium text-gray-700">
-                  Department Filter
-                </Label>
+                <Label htmlFor="department-filter">Department Filter</Label>
                 <Select>
-                  <SelectTrigger className="bg-white/80 border-gray-200 focus:border-purple-400 focus:ring-purple-400">
+                  <SelectTrigger className="border-muted-foreground/30 focus:border-muted-foreground/50">
                     <SelectValue placeholder="All departments" />
                   </SelectTrigger>
                   <SelectContent>
@@ -217,11 +211,9 @@ export function AddReportModal({ children }: AddReportModalProps) {
                 </Select>
               </div>
               <div className="space-y-2">
-                <Label htmlFor="status-filter" className="text-sm font-medium text-gray-700">
-                  Status Filter
-                </Label>
+                <Label htmlFor="status-filter">Status Filter</Label>
                 <Select>
-                  <SelectTrigger className="bg-white/80 border-gray-200 focus:border-purple-400 focus:ring-purple-400">
+                  <SelectTrigger className="border-muted-foreground/30 focus:border-muted-foreground/50">
                     <SelectValue placeholder="All statuses" />
                   </SelectTrigger>
                   <SelectContent>
@@ -237,55 +229,59 @@ export function AddReportModal({ children }: AddReportModalProps) {
           </div>
 
           {/* Report Description */}
-          <div className="bg-gradient-to-r from-orange-50 to-yellow-50 p-6 rounded-xl border border-orange-100">
-            <h3 className="text-lg font-semibold text-gray-800 mb-4">Report Description & Notes</h3>
+          <div className=" space-y-4">
+            <h3 className="text-sm font-medium uppercase tracking-wider text-muted-foreground">
+              Report Description & Notes
+            </h3>
             <div className="space-y-4">
               <div className="space-y-2">
-                <Label htmlFor="description" className="text-sm font-medium text-gray-700">
-                  Description
-                </Label>
+                <Label htmlFor="description">Description</Label>
                 <Textarea
                   id="description"
                   placeholder="Describe what this report will analyze and its purpose..."
-                  className="bg-white/80 border-gray-200 focus:border-orange-400 focus:ring-orange-400"
-                  rows={3}
+                  className="border-muted-foreground/30 focus:border-muted-foreground/50 min-h-[100px]"
                 />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="recipients" className="text-sm font-medium text-gray-700">
-                  Email Recipients
-                </Label>
+                <Label htmlFor="recipients">Email Recipients</Label>
                 <Input
                   id="recipients"
                   placeholder="email1@company.com, email2@company.com"
-                  className="bg-white/80 border-gray-200 focus:border-orange-400 focus:ring-orange-400"
+                  className="border-muted-foreground/30 focus:border-muted-foreground/50"
                 />
               </div>
             </div>
           </div>
 
           {/* Submit Button */}
-          <div className="flex justify-end gap-3 pt-6 border-t border-gray-200">
-            <Button type="button" variant="outline" onClick={() => setOpen(false)} className="px-6">
-              Cancel
-            </Button>
-            <Button
-              type="submit"
-              disabled={loading}
-              className="px-6 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white shadow-lg"
-            >
-              {loading ? (
-                <>
-                  <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
-                  Generating Report...
-                </>
-              ) : (
-                <>
-                  <Plus className="mr-2 h-4 w-4" />
-                  Create Report
-                </>
-              )}
-            </Button>
+          <div className="sticky bottom-0 bg-background py-4 border-t border-muted-foreground/10 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.05)]">
+            <div className="grid grid-cols-2 gap-3 w-full">
+              <Button 
+                type="button" 
+                variant="outline" 
+                onClick={() => setOpen(false)}
+                className="border-muted-foreground/30 hover:bg-muted"
+              >
+                Cancel
+              </Button>
+              <Button
+                type="submit"
+                disabled={loading}
+                className="bg-foreground text-background hover:bg-foreground/90"
+              >
+                {loading ? (
+                  <>
+                    <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
+                    Generating...
+                  </>
+                ) : (
+                  <>
+                    <Plus className="mr-2 h-4 w-4" />
+                    Create Report
+                  </>
+                )}
+              </Button>
+            </div>
           </div>
         </form>
       </DialogContent>
