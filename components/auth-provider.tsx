@@ -8,16 +8,25 @@ interface User {
   id: string
   email: string
   name: string
+  first_name?: string
+  last_name?: string
   role: string
   tenantId: string
   permissions: string[]
 }
 
+export type AuthMode = "sign-in" | "sign-up";
+
 interface AuthContextType {
   user: User | null
-  login: (email: string, password: string) => Promise<void>
+  login: (email: string | { email: string; password?: string }) => Promise<void>
   logout: () => void
   loading: boolean
+  isAuthenticated: boolean
+  isAuthOpen: boolean
+  setIsAuthOpen: (open: boolean) => void
+  authMode: AuthMode
+  setAuthMode: (mode: AuthMode) => void
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined)
@@ -25,6 +34,8 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined)
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<User | null>(null)
   const [loading, setLoading] = useState(true)
+  const [isAuthOpen, setIsAuthOpen] = useState(false)
+  const [authMode, setAuthMode] = useState<AuthMode>("sign-in")
 
   useEffect(() => {
     // Auto-login for demo purposes - bypass authentication
@@ -32,6 +43,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       id: "1",
       email: "demo@company.com",
       name: "Demo User",
+      first_name: "Demo",
+      last_name: "User",
       role: "admin",
       tenantId: "tenant-1",
       permissions: [
@@ -77,12 +90,15 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     setLoading(false)
   }, [])
 
-  const login = async (email: string, password: string) => {
+  const login = async (credentials: string | { email: string; password?: string }) => {
+    const email = typeof credentials === 'string' ? credentials : credentials.email;
     // Auto-login for demo
     const mockUser: User = {
       id: "1",
       email,
       name: "Demo User",
+      first_name: "Demo",
+      last_name: "User",
       role: "admin",
       tenantId: "tenant-1",
       permissions: ["admin"],
@@ -94,7 +110,23 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     setUser(null)
   }
 
-  return <AuthContext.Provider value={{ user, login, logout, loading }}>{children}</AuthContext.Provider>
+  return (
+    <AuthContext.Provider
+      value={{
+        user,
+        login,
+        logout,
+        loading,
+        isAuthenticated: !!user,
+        isAuthOpen,
+        setIsAuthOpen,
+        authMode,
+        setAuthMode,
+      }}
+    >
+      {children}
+    </AuthContext.Provider>
+  )
 }
 
 export function useAuth() {

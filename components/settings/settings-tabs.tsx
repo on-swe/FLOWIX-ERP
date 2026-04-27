@@ -40,8 +40,8 @@ export function SettingsTabs() {
         </p>
         <p>
           Designed and Developed by{" "}
-          <Link href="https://raqeem-eg.vercel.app" className="hover:underline">
-            <strong>Raqeem - رَقيم</strong>
+          <Link href="https://elrayes.vercel.app" className="hover:underline">
+            <strong>Elrayes</strong>
           </Link>
         </p>
       </div>

@@ -11,7 +11,7 @@ const inter = Inter({ subsets: ["latin"] })
 export const metadata: Metadata = {
   title: "Flowix | ERP System",
   description: "Complete enterprise resource planning solution",
-    generator: 'Raqeem - رَقيم',
+    generator: 'Abdelrahman Elrayes',
     icons:{
       icon: '/logo/logo.png',
     }

@@ -40,7 +40,7 @@ export function DashboardHeader() {
         </form>
 
         <div className="flex items-center gap-x-4 lg:gap-x-6">
-          <ThemeToggle />
+          {/* <ThemeToggle /> */}
 
           {/* Notifications */}
           <Button variant="ghost" size="icon" className="relative hover:bg-gray-100 dark:hover:bg-gray-800">

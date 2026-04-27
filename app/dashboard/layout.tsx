@@ -2,8 +2,9 @@
 
 import type React from "react";
 
-import { DashboardSidebar } from "@/components/dashboard-sidebar";
+import { AppSidebar } from "@/components/app-sidebar";
 import { DashboardHeader } from "@/components/dashboard-header";
+import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
 
 export default function DashboardLayout({
   children,
@@ -11,18 +12,20 @@ export default function DashboardLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="min-h-screen bg-white dark:bg-gray-900">
-      <DashboardSidebar />
-      <div className="lg:pl-64">
-        <div className="sticky top-0 z-20">
-          <DashboardHeader />
-        </div>
-        <main className="py-6">
-          <div className="mx-auto w-full max-w-[100rem] px-4 sm:px-6 lg:px-8">
-            {children}
+    <SidebarProvider>
+      <AppSidebar />
+      <SidebarInset>
+        <div className="flex flex-col min-h-screen bg-white dark:bg-gray-900">
+          <div className="sticky top-0 z-20">
+            <DashboardHeader />
           </div>
-        </main>
-      </div>
-    </div>
+          <main className="py-6">
+            <div className="mx-auto w-full max-w-[100rem] px-4 sm:px-6 lg:px-8">
+              {children}
+            </div>
+          </main>
+        </div>
+      </SidebarInset>
+    </SidebarProvider>
   );
 }
